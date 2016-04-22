@@ -7,11 +7,11 @@ require "ood_app/version"
 Gem::Specification.new do |s|
   s.name        = "ood_app"
   s.version     = OodApp::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of OodApp."
-  s.description = "TODO: Description of OodApp."
+  s.authors     = ["Eric Franz"]
+  s.email       = ["efranz@osc.edu"]
+  s.homepage    = "https://github.com/osc"
+  s.summary     = "Interface with other apps and deploy your app using this gem."
+  s.description = "Interface with other apps and deploy your app using this gem."
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
