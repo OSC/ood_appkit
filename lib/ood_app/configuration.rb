@@ -1,7 +1,7 @@
 module OodApp
   module Configuration
 
-    attr_accessor :dataroot, :dashboard, :files, :shell
+    attr_accessor :dataroot, :dashboard, :files, :shell, :parent_engine
 
     def configure
       yield self
