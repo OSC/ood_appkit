@@ -3,10 +3,6 @@ module OodApp
 
     attr_accessor :dataroot, :dashboard, :files, :shell, :parent_engine
 
-    def configure
-      yield self
-    end
-
     # Return the configuration object.
     #
     # @return [Object] self The configuration object.
