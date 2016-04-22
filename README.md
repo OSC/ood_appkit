@@ -21,16 +21,15 @@ OodApp.dashboard.url
 OodApp.files.url
 
 # url to open files app to specified directory (accepts pathname)
-OodApp.files.url(directory: "/nfs/17/efranz/ood_dev")
-OodApp.files.url(directory: Pathname.new("/nfs/17/efranz/ood_dev"))
+OodApp.files.url(path: "/nfs/17/efranz/ood_dev")
+OodApp.files.url(path: Pathname.new("/nfs/17/efranz/ood_dev"))
 
 
-# other base url's (deprecate these! use something else in place)
-OodApp.files.api_url
+# other base url's
+OodApp.files.base_api_url
 
 # base url to append the directory you want to open the files app to
-# FIXME: should this end in /?
-OodApp.files.fs_url
+OodApp.files.base_fs_url
 ```
 
 ### Shell
@@ -38,16 +37,13 @@ OodApp.files.fs_url
 ```ruby
 OodApp.shell.url
 
-OodApp.shell.url(directory: "/nfs/17/efranz/ood_dev")
+OodApp.shell.url(path: "/nfs/17/efranz/ood_dev")
 
 OodApp.shell.url(host: "ruby")
 
-OodApp.shell.url(host: "ruby", directory: "/nfs/17/efranz/ood_dev")
+OodApp.shell.url(host: "ruby", path: "/nfs/17/efranz/ood_dev")
 ```
 
-
-
-todo: dataroot pathname configuration etc.
 
 todo: fix ood_breadcrumbs helper in awesim_rails to use ood_app
 todo: add ood_breadcrumbs or ood_app:breadcrumbs (namespaced helper?)
