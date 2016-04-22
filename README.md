@@ -11,7 +11,8 @@ Generated using:
 
 ```ruby
 # access dashboard url for the link "back to dashboard"
-OodApp.dashboard.url
+OodApp.dashboard.url # /pun/sys/dashboard or OOD_DATAROOT env var or RAILS_DATAROOT
+OodApp.dashboard.title # OSC OnDemand or OOD_DASHBOARD_TITLE env var
 ```
 
 ### Files
@@ -32,6 +33,8 @@ OodApp.files.base_api_url
 OodApp.files.base_fs_url
 ```
 
+Can change base url using OOD_FILES_URL env var or modifying attrs directly on OodApp.files object
+
 ### Shell
 
 ```ruby
@@ -44,7 +47,6 @@ OodApp.shell.url(host: "ruby")
 OodApp.shell.url(host: "ruby", path: "/nfs/17/efranz/ood_dev")
 ```
 
+Can change base url using OOD_SHELL_URL env var or modifying attrs directly on OodApp.shell object
 
-todo: fix ood_breadcrumbs helper in awesim_rails to use ood_app
-todo: add ood_breadcrumbs or ood_app:breadcrumbs (namespaced helper?)
 
