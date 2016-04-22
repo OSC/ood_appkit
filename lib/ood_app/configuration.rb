@@ -1,6 +1,7 @@
 module OodApp
   module Configuration
-    attr_accessor :dashboard_url, :files_url, :shell_url
+
+    attr_accessor :dataroot, :dashboard, :files, :shell
 
     def configure
       yield self
