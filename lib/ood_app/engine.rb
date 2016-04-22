@@ -1,9 +1,6 @@
 require 'ostruct'
 
 module OodApp
-  class Engine < ::Rails::Engine
-
-
   # Sets up the OodRails Engine
   #
   #   Sets up the parent engine
@@ -24,23 +21,12 @@ module OodApp
 
 
       # initialize dashboard, files, and shell objects
-      # (for now, KISS)
-      #
-
-#       # FIXME The AwesimRails.dashboard_url is hardcoded. This should probably be set by an environment variable
-#       AwesimRails.dashboard_url = 'https://apps.awesim.org/devapps/'
-
-#       # FIXME: soon determine a solution for changing the BRAND of the app
-#       # we should probably pass BRAND and DASHBOARD_URL as environment variables into the PUN
-#       if Rails.root.to_s =~ %r(/nfs/.*)
-#         AwesimRails.ood_dashboard_url = '/pun/shared/efranz/dashboard'
-#       else
-#         AwesimRails.ood_dashboard_url = '/pun/sys/dashboard'
-#       end
-#       AwesimRails.ood_dashboard_title = 'OSC OnDemand'
-
-#       ActionView::Template.register_template_handler :md, MarkdownTemplateHandler
-#       ActionView::Template.register_template_handler :markdown, MarkdownTemplateHandler
+      OodApp.dashboard = OpenStruct.new(
+        url: ENV['OOD_DASHBOARD_URL'] || '/pun/sys/dashboard',
+        title: ENV['OOD_DASHBOARD_TITLE'] || 'OSC OnDemand',
+      )
+      OodApp.shell = ::OodApp::ShellApp.new(ENV['OOD_SHELL_URL'] || OodApp::ShellApp.default_base_url)
+      OodApp.files = ::OodApp::FilesApp.new(ENV['OOD_FILES_URL'] || OodApp::FilesApp.default_base_url)
     end
 
     # Exception Class thrown when the <tt>OOD_DATAROOT</tt> environment variable is not defined.
@@ -50,8 +36,9 @@ module OodApp
     end
 
     config.to_prepare do
+      # TODO:
       # make the helper available to all views
-      # ApplicationController.helper(AwesimBannerHelper)
+      # i.e. ApplicationController.helper(OodBannerHelper)
     end
   end
 end
