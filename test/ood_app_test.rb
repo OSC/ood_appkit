@@ -24,7 +24,7 @@ class OodAppTest < ActiveSupport::TestCase
     assert_equal "/f/api/v1/fs", f.base_api_url
 
     assert_equal "/f/fs/nfs/17/efranz/ood_dev", f.url(path: "/nfs/17/efranz/ood_dev")
-    assert_equal "/f/fs/nfs/17/efranz/ood_dev", f.url(path: Pathname.new("/nfs/17/efranz/ood_dev")
+    assert_equal "/f/fs/nfs/17/efranz/ood_dev", f.url(path: Pathname.new("/nfs/17/efranz/ood_dev"))
   end
 
 end
