@@ -1,38 +1,23 @@
 module OodApp
+  # A class used to handle URLs for the system Shell app.
   class ShellApp
-    attr_accessor :base_url
+    # @param base_url [String] the base URL used to access this app
+    # @param template [String] the template used to generate URLs for this app
+    # @see https://www.rfc-editor.org/rfc/rfc6570.txt RFC describing template format
+    def initialize(base_url: '/', ssh_url: '/ssh', template: '{/url*}/{host}{+path}')
+      @template = Addressable::Template.new template
 
-    def self.default_base_url
-      '/pun/sys/shell'
+      # Break up into arrays of strings
+      @base_url = base_url.split('/').reject(&:empty?)
+      @ssh_url  = ssh_url.split('/').reject(&:empty?)
     end
 
-    def initialize(url)
-      @base_url = url
-    end
-
-    def url(path:"", host: "default")
-      if path.nil? || path == ""
-        join_relative_uris(base_url, "ssh", host)
-      else
-        join_relative_uris(base_url, "ssh", host, path)
-      end
-    end
-
-    # FIXME: refactor - a URI subclass, for example; OODApp::URI
-    private
-
-    # normalize the pathname so it can be appended at the end of a URL
-    def normalize(path)
-      # TODO: if we want to support running on Windows nodes,
-      # file system path must be updated so we can use it in a URL
-
-      # coerce to string so we can handle Pathnames, Strings, URIs, etc.
-      path ? URI.encode(path.to_s) : ""
-    end
-
-    def join_relative_uris(*uris)
-      # TODO: do we need to be concerned about windows, \, etc.?
-      File.join(uris.map(&:to_s))
+    # URL to access this app for a given host and absolute file path
+    # @param host [String] the host the app will make an ssh connection with
+    # @param path [String, #to_s] the absolute path to the directory ssh app opens up in
+    # @return [Addressable::URI] the url used to access the app
+    def url(path: '', host: 'default')
+      @template.expand url: @base_url + @ssh_url, path: path.to_s, host: host
     end
   end
 end

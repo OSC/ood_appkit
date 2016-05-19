@@ -11,42 +11,41 @@ Generated using:
 
 ```ruby
 # access dashboard url for the link "back to dashboard"
-OodApp.dashboard.url # /pun/sys/dashboard or OOD_DATAROOT env var or RAILS_DATAROOT
-OodApp.dashboard.title # OSC OnDemand or OOD_DASHBOARD_TITLE env var
+OodApp.dashboard.url # /pun/sys/dashboard
 ```
+
+Can change base url using `OOD_DASHBOARD_URL` env var or modifying attrs directly on `OodApp.files` object
 
 ### Files
 
 ```ruby
-# base url to the files app opened to the user's home directory
+# url to launch files app
 OodApp.files.url
 
-# url to open files app to specified directory (accepts pathname)
+# url to open files app to specified directory (accepts any object with `#to_s`)
 OodApp.files.url(path: "/nfs/17/efranz/ood_dev")
 OodApp.files.url(path: Pathname.new("/nfs/17/efranz/ood_dev"))
 
-
-# other base url's
-OodApp.files.base_api_url
-
-# base url to append the directory you want to open the files app to
-OodApp.files.base_fs_url
+# url to retrieve API information for specified path
+OodApp.files.api(path: "/nfs/17/efranz/ood_dev")
 ```
 
-Can change base url using OOD_FILES_URL env var or modifying attrs directly on OodApp.files object
+Can change base url using `OOD_FILES_URL` env var or modifying attrs directly on `OodApp.dashboard` object
 
 ### Shell
 
 ```ruby
+# url to launch shell app
 OodApp.shell.url
 
-OodApp.shell.url(path: "/nfs/17/efranz/ood_dev")
-
+# url to launch shell app for specified host
 OodApp.shell.url(host: "ruby")
 
+# url to launch shell app in specified directory
+OodApp.shell.url(path: "/nfs/17/efranz/ood_dev")
+
+# url to launch shell app for specified host in directory
 OodApp.shell.url(host: "ruby", path: "/nfs/17/efranz/ood_dev")
 ```
 
-Can change base url using OOD_SHELL_URL env var or modifying attrs directly on OodApp.shell object
-
-
+Can change base url using `OOD_SHELL_URL` env var or modifying attrs directly on `OodApp.shell` object
