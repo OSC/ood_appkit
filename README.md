@@ -30,7 +30,7 @@ OodApp.files.url(path: Pathname.new("/nfs/17/efranz/ood_dev"))
 OodApp.files.api(path: "/nfs/17/efranz/ood_dev")
 ```
 
-Can change base url using `OOD_FILES_URL` env var or modifying attrs directly on `OodApp.files` object
+Can change base url using `OOD_FILES_URL` env var or modifying attrs directly on `OodApp.dashboard` object
 
 ### Shell
 
