@@ -101,7 +101,7 @@ Note: You will need to import the appropriate stylesheet if you want the
 rendered markdown to resemble GitHub's display of markdown.
 
 ```scss
-# app/assets/stylesheets/application.scss
+// app/assets/stylesheets/application.scss
 
 import "ood_app/markdown";
 ```
@@ -110,7 +110,7 @@ It is also included if you import the default stylesheet:
 
 
 ```scss
-# app/assets/stylesheets/application.scss
+// app/assets/stylesheets/application.scss
 
 import "ood_app";
 ```
