@@ -1,51 +1,32 @@
 module OodApp
+  # A class used to handle URLs for the system Files app.
   class FilesApp
-    attr_accessor :base_url, :base_api_url, :base_fs_url
+    # @param base_url [String] the base URL used to access this app
+    # @param fs_url [String] the URL used to request a filesystem view in the app
+    # @param api_url [String] the URL used to request the app's api
+    # @param template [String] the template used to generate URLs for this app
+    # @see https://www.rfc-editor.org/rfc/rfc6570.txt RFC describing template format
+    def initialize(base_url: '/', fs_url: '/fs', api_url: '/api/v1/fs', template: '{/url*}{+path}')
+      @template = Addressable::Template.new template
 
-    def self.default_base_url
-      '/pun/sys/files'
+      # Break up into arrays of strings
+      @base_url = base_url.split('/').reject(&:empty?)
+      @fs_url   = fs_url.split('/').reject(&:empty?)
+      @api_url  = api_url.split('/').reject(&:empty?)
     end
 
-    def initialize(url)
-      @base_url = normalize(url)
-
-      #FIXME: all of these should be configurable via ENV VARS
-      @base_fs_url = join_relative_uris(base_url, "/fs")
-      @base_api_url = join_relative_uris(base_url, "/api/v1/fs")
+    # URL to access this app for a given absolute file path
+    # @param path [String, #to_s] the absolute path to the file on the filesystem
+    # @return [Addressable::URI] absolute url to access path in files app
+    def url(path: '')
+      @template.expand url: @base_url + @fs_url, path: path.to_s
     end
 
-    # return url that will provide html representations of the 
-    # file system resource specified by the file system path (i.e. the cloudcmd
-    # interface)
-    def url(path: "")
-      if path == ""
-        join_relative_uris(base_url, normalize(path))
-      else
-        join_relative_uris(base_fs_url, normalize(path))
-      end
-    end
-
-    # return url that will provide json or content representations of the 
-    # file system resource specified by the file system path
-    def api(path: "")
-      join_relative_uris(base_api_url, normalize(path))
-    end
-
-
-    private
-
-    # normalize the pathname so it can be appended at the end of a URL
-    def normalize(path)
-      # TODO: if we want to support running on Windows nodes,
-      # file system path must be updated so we can use it in a URL
-
-      # coerce to string so we can handle Pathnames, Strings, URIs, etc.
-      path ? URI.encode(path.to_s) : ""
-    end
-
-    def join_relative_uris(*uris)
-      # TODO: do we need to be concerned about windows, \, etc.?
-      File.join(uris.map(&:to_s))
+    # URL to access this app's API for a given absolute file path
+    # @param path [String, #to_s] the absolute path to the file on the filesystem
+    # @return [Addressable::URI] absolute url to access path in files app api
+    def api(path: '')
+      @template.expand url: @base_url + @api_url, path: path.to_s
     end
   end
 end
