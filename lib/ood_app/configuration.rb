@@ -1,3 +1,5 @@
+require 'redcarpet'
+
 module OodApp
   # An object that stores and adds configuration options.
   module Configuration
@@ -24,6 +26,10 @@ module OodApp
     # @return [FilesRackApp] the rack middleware app used to serve files
     attr_accessor :files_rack_app
 
+    # A markdown renderer used when rendering `*.md` or `*.markdown` views
+    # @return [Redcarpet::Markdown] the markdown renderer used
+    attr_accessor :markdown
+
     # Customize configuration for this object.
     # @yield [self]
     def configure
@@ -43,6 +49,16 @@ module OodApp
 
       # Initialize Rack middleware app
       self.files_rack_app = FilesRackApp.new
+
+      # Add markdown template support
+      self.markdown = Redcarpet::Markdown.new(
+        Redcarpet::Render::HTML,
+        autolink: true,
+        tables: true,
+        strikethrough: true,
+        fenced_code_blocks: true,
+        no_intra_emphasis: true
+      )
     end
   end
 end

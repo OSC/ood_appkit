@@ -73,3 +73,44 @@ OodApp.configure do |config|
   #config.files_rack_app = nil
 end
 ```
+
+### Markdown Handler
+
+A simple markdown handler is included with this gem. Any views with the
+extensions `*.md` or `*.markdown` will be handled using the `Redcarpet` gem.
+The renderer can be modified as such:
+
+```ruby
+# config/initializers/ood_app.rb
+
+OodApp.configure do |config|
+  config.markdown = Redcarpet::Markdown.new(
+    Redcarpet::Render::HTML,
+    autolink: true,
+    tables: true,
+    strikethrough: true,
+    fenced_code_blocks: true,
+    no_intra_emphasis: true
+  )
+end
+```
+
+Really any object can be used that responds to `#render`.
+
+Note: You will need to import the appropriate stylesheet if you want the
+rendered markdown to resemble GitHub's display of markdown.
+
+```scss
+# app/assets/stylesheets/application.scss
+
+import "ood_app/markdown";
+```
+
+It is also included if you import the default stylesheet:
+
+
+```scss
+# app/assets/stylesheets/application.scss
+
+import "ood_app";
+```
