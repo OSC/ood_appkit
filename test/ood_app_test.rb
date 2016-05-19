@@ -8,7 +8,7 @@ class OodAppTest < ActiveSupport::TestCase
   # FIXME: move these tests elsewhere
   #
   test "shell urls" do
-    s = OodApp::ShellApp.new(base_url: "/sh")
+    s = OodApp::ShellUrl.new(base_url: "/sh")
 
     assert_equal "/sh/ssh/default", s.url.to_s
     assert_equal "/sh/ssh/oakley", s.url(host: "oakley").to_s
@@ -19,7 +19,7 @@ class OodAppTest < ActiveSupport::TestCase
   end
 
   test "files urls" do
-    f = OodApp::FilesApp.new(base_url: "/f")
+    f = OodApp::FilesUrl.new(base_url: "/f")
 
     assert_equal "/f/fs/nfs/17/efranz/ood_dev", f.url(path: "/nfs/17/efranz/ood_dev").to_s
     assert_equal "/f/fs/nfs/17/efranz/ood_dev", f.url(path: Pathname.new("/nfs/17/efranz/ood_dev")).to_s

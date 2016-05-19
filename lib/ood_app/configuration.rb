@@ -11,15 +11,15 @@ module OodApp
     attr_writer :dataroot
 
     # System dashboard app url handler
-    # @return [DashboardApp] the url handler for the system dashboard app
+    # @return [DashboardUrl] the url handler for the system dashboard app
     attr_accessor :dashboard
 
     # System shell app url handler
-    # @return [ShellApp] the url handler for the system shell app
+    # @return [ShellUrl] the url handler for the system shell app
     attr_accessor :shell
 
     # System files app url handler
-    # @return [FilesApp] the url handler for the system files app
+    # @return [FilesUrl] the url handler for the system files app
     attr_accessor :files
 
     # Rack middleware app that serves files on local filesystem
@@ -43,9 +43,9 @@ module OodApp
       self.dataroot = ENV['OOD_DATAROOT'] || ENV['RAILS_DATAROOT']
 
       # Initialize system apps
-      self.dashboard = DashboardApp.new(base_url: ENV['OOD_DASHBOARD_URL'] || '/pun/sys/dashboard')
-      self.shell     = ShellApp.new(base_url: ENV['OOD_SHELL_URL'] || '/pun/sys/shell')
-      self.files     = FilesApp.new(base_url: ENV['OOD_FILES_URL'] || '/pun/sys/files')
+      self.dashboard = DashboardUrl.new(base_url: ENV['OOD_DASHBOARD_URL'] || '/pun/sys/dashboard')
+      self.shell     = ShellUrl.new(base_url: ENV['OOD_SHELL_URL'] || '/pun/sys/shell')
+      self.files     = FilesUrl.new(base_url: ENV['OOD_FILES_URL'] || '/pun/sys/files')
 
       # Initialize Rack middleware app
       self.files_rack_app = FilesRackApp.new

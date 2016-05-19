@@ -1,6 +1,6 @@
 module OodApp
   # A class used to handle URLs for the system Dashboard app.
-  class DashboardApp
+  class DashboardUrl
     # @param base_url [String] the base URL used to access this app
     # @param template [String] the template used to generate URLs for this app
     # @see https://www.rfc-editor.org/rfc/rfc6570.txt RFC describing template format

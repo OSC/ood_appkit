@@ -8,14 +8,23 @@ Generated using:
 
 ### URL Handlers for System Apps
 
-#### Dashboard App
+#### Dashboard URL
 
 ```ruby
 # access dashboard url for the link "back to dashboard"
 OodApp.dashboard.url # /pun/sys/dashboard
 ```
 
-Can change base url using `OOD_DASHBOARD_URL` env var or modifying attrs directly on `OodApp.files` object
+You can change the base url using `OOD_DASHBOARD_URL` env var or modifying the
+configuration in an initializer:
+
+```ruby
+# config/initializers/ood_app.rb
+
+OodApp.configure do |config|
+  config.dashboard = DashboardUrl.new base_url: '/pun/sys/dashboard'
+end
+```
 
 #### Files App
 
@@ -31,7 +40,16 @@ OodApp.files.url(path: Pathname.new("/nfs/17/efranz/ood_dev"))
 OodApp.files.api(path: "/nfs/17/efranz/ood_dev")
 ```
 
-Can change base url using `OOD_FILES_URL` env var or modifying attrs directly on `OodApp.dashboard` object
+You can change the base url using `OOD_FILES_URL` env var or modifying the
+configuration in an initializer:
+
+```ruby
+# config/initializers/ood_app.rb
+
+OodApp.configure do |config|
+  config.files = FilesUrl.new base_url: '/pun/sys/files'
+end
+```
 
 #### Shell App
 
@@ -49,7 +67,16 @@ OodApp.shell.url(path: "/nfs/17/efranz/ood_dev")
 OodApp.shell.url(host: "ruby", path: "/nfs/17/efranz/ood_dev")
 ```
 
-Can change base url using `OOD_SHELL_URL` env var or modifying attrs directly on `OodApp.shell` object
+You can change the base url using `OOD_SHELL_URL` env var or modifying the
+configuration in an initializer:
+
+```ruby
+# config/initializers/ood_app.rb
+
+OodApp.configure do |config|
+  config.shell = ShellUrl.new base_url: '/pun/sys/shell'
+end
+```
 
 ### Rack Middleware for handling Files under Dataroot
 

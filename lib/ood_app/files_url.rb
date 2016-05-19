@@ -1,6 +1,6 @@
 module OodApp
   # A class used to handle URLs for the system Files app.
-  class FilesApp
+  class FilesUrl
     # @param base_url [String] the base URL used to access this app
     # @param fs_url [String] the URL used to request a filesystem view in the app
     # @param api_url [String] the URL used to request the app's api
