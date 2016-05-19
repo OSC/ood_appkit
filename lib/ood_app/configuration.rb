@@ -20,6 +20,10 @@ module OodApp
     # @return [FilesApp] the url handler for the system files app
     attr_accessor :files
 
+    # Rack middleware app that serves files on local filesystem
+    # @return [FilesRackApp] the rack middleware app used to serve files
+    attr_accessor :files_rack_app
+
     # Customize configuration for this object.
     # @yield [self]
     def configure
@@ -36,6 +40,9 @@ module OodApp
       self.dashboard = DashboardApp.new(base_url: ENV['OOD_DASHBOARD_URL'] || '/pun/sys/dashboard')
       self.shell     = ShellApp.new(base_url: ENV['OOD_SHELL_URL'] || '/pun/sys/shell')
       self.files     = FilesApp.new(base_url: ENV['OOD_FILES_URL'] || '/pun/sys/files')
+
+      # Initialize Rack middleware app
+      self.files_rack_app = FilesRackApp.new
     end
   end
 end

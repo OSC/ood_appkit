@@ -6,8 +6,9 @@ Generated using:
 
 ## Usage
 
+### URL Handlers for System Apps
 
-### Dashboard
+#### Dashboard App
 
 ```ruby
 # access dashboard url for the link "back to dashboard"
@@ -16,7 +17,7 @@ OodApp.dashboard.url # /pun/sys/dashboard
 
 Can change base url using `OOD_DASHBOARD_URL` env var or modifying attrs directly on `OodApp.files` object
 
-### Files
+#### Files App
 
 ```ruby
 # url to launch files app
@@ -32,7 +33,7 @@ OodApp.files.api(path: "/nfs/17/efranz/ood_dev")
 
 Can change base url using `OOD_FILES_URL` env var or modifying attrs directly on `OodApp.dashboard` object
 
-### Shell
+#### Shell App
 
 ```ruby
 # url to launch shell app
@@ -49,3 +50,26 @@ OodApp.shell.url(host: "ruby", path: "/nfs/17/efranz/ood_dev")
 ```
 
 Can change base url using `OOD_SHELL_URL` env var or modifying attrs directly on `OodApp.shell` object
+
+### Rack Middleware for handling Files under Dataroot
+
+This automounts all the files under the `OodApp.dataroot` using the following route by default:
+
+```ruby
+# config/routes.rb
+
+mount OodApp.files_rack_app => '/files', as: 'files'
+```
+
+To alter this behavior modify the configuration in an initializer as such:
+
+```ruby
+# config/initializers/ood_app.rb
+
+OodApp.configure do |config|
+  config.files_rack_app = OodApp::FilesRackApp.new route_path: '/files', route_helper: 'files'
+
+  # To disable this route completely, uncomment the line below
+  #config.files_rack_app = nil
+end
+```
