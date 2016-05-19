@@ -22,7 +22,7 @@ configuration in an initializer:
 # config/initializers/ood_app.rb
 
 OodApp.configure do |config|
-  config.dashboard = DashboardUrl.new base_url: '/pun/sys/dashboard'
+  config.dashboard = OodApp::DashboardUrl.new base_url: '/pun/sys/dashboard'
 end
 ```
 
@@ -47,7 +47,7 @@ configuration in an initializer:
 # config/initializers/ood_app.rb
 
 OodApp.configure do |config|
-  config.files = FilesUrl.new base_url: '/pun/sys/files'
+  config.files = OodApp::FilesUrl.new base_url: '/pun/sys/files'
 end
 ```
 
@@ -74,7 +74,7 @@ configuration in an initializer:
 # config/initializers/ood_app.rb
 
 OodApp.configure do |config|
-  config.shell = ShellUrl.new base_url: '/pun/sys/shell'
+  config.shell = OodApp::ShellUrl.new base_url: '/pun/sys/shell'
 end
 ```
 
