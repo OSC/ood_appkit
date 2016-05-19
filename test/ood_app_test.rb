@@ -8,23 +8,21 @@ class OodAppTest < ActiveSupport::TestCase
   # FIXME: move these tests elsewhere
   #
   test "shell urls" do
-    s = OodApp::ShellApp.new("/sh")
+    s = OodApp::ShellApp.new(base_url: "/sh")
 
-    assert_equal "/sh/ssh/default", s.url
-    assert_equal "/sh/ssh/oakley", s.url(host: "oakley")
-    assert_equal "/sh/ssh/oakley", s.url(host: :oakley)
-    assert_equal "/sh/ssh/oakley/nfs/gpfs", s.url(host: :oakley, path: "/nfs/gpfs")
-    assert_equal "/sh/ssh/default/nfs/gpfs", s.url(path: "/nfs/gpfs")
-    assert_equal "/sh/ssh/default/nfs/gpfs", s.url(path: Pathname.new("/nfs/gpfs"))
+    assert_equal "/sh/ssh/default", s.url.to_s
+    assert_equal "/sh/ssh/oakley", s.url(host: "oakley").to_s
+    assert_equal "/sh/ssh/oakley", s.url(host: :oakley).to_s
+    assert_equal "/sh/ssh/oakley/nfs/gpfs", s.url(host: :oakley, path: "/nfs/gpfs").to_s
+    assert_equal "/sh/ssh/default/nfs/gpfs", s.url(path: "/nfs/gpfs").to_s
+    assert_equal "/sh/ssh/default/nfs/gpfs", s.url(path: Pathname.new("/nfs/gpfs")).to_s
   end
 
   test "files urls" do
-    f = OodApp::FilesApp.new("/f")
-    assert_equal "/f/fs", f.base_fs_url
-    assert_equal "/f/api/v1/fs", f.base_api_url
+    f = OodApp::FilesApp.new(base_url: "/f")
 
-    assert_equal "/f/fs/nfs/17/efranz/ood_dev", f.url(path: "/nfs/17/efranz/ood_dev")
-    assert_equal "/f/fs/nfs/17/efranz/ood_dev", f.url(path: Pathname.new("/nfs/17/efranz/ood_dev"))
+    assert_equal "/f/fs/nfs/17/efranz/ood_dev", f.url(path: "/nfs/17/efranz/ood_dev").to_s
+    assert_equal "/f/fs/nfs/17/efranz/ood_dev", f.url(path: Pathname.new("/nfs/17/efranz/ood_dev")).to_s
   end
 
 end
