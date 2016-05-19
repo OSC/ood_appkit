@@ -42,12 +42,12 @@ module OodApp
       ActiveSupport::Deprecation.warn("The environment variable RAILS_DATAROOT will be deprecated in an upcoming release, please use OOD_DATAROOT instead.") if ENV['RAILS_DATAROOT']
       self.dataroot = ENV['OOD_DATAROOT'] || ENV['RAILS_DATAROOT']
 
-      # Initialize system apps
+      # Initialize URL handlers for system apps
       self.dashboard = DashboardUrl.new(base_url: ENV['OOD_DASHBOARD_URL'] || '/pun/sys/dashboard')
       self.shell     = ShellUrl.new(base_url: ENV['OOD_SHELL_URL'] || '/pun/sys/shell')
       self.files     = FilesUrl.new(base_url: ENV['OOD_FILES_URL'] || '/pun/sys/files')
 
-      # Initialize Rack middleware app
+      # Initialize included apps
       self.files_rack_app = FilesRackApp.new
 
       # Add markdown template support
