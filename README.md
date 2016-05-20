@@ -173,7 +173,7 @@ And add a show view for this controller:
 ```erb
 <%# app/views/my_wiki/show.html.erb %>
 
-<div class="ood_app markdown">
+<div class="ood-app markdown">
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
       <%= render file: @page %>
