@@ -130,7 +130,7 @@ rendered markdown to resemble GitHub's display of markdown.
 ```scss
 // app/assets/stylesheets/application.scss
 
-import "ood_app/markdown";
+@import "ood_app/markdown";
 ```
 
 It is also included if you import the default stylesheet:
@@ -139,5 +139,5 @@ It is also included if you import the default stylesheet:
 ```scss
 // app/assets/stylesheets/application.scss
 
-import "ood_app";
+@import "ood_app";
 ```
