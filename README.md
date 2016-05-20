@@ -80,25 +80,106 @@ end
 
 ### Rack Middleware for handling Files under Dataroot
 
-This automounts all the files under the `OodApp.dataroot` using the following route by default:
+This mounts all the files under the `OodApp.dataroot` using the following route
+by default:
 
 ```ruby
 # config/routes.rb
 
-mount OodApp.files_rack_app => '/files', as: 'files'
+mount OodApp::FilesRackApp.new => '/files', as: :files
 ```
 
-To alter this behavior modify the configuration in an initializer as such:
+To disable this generated route:
 
 ```ruby
 # config/initializers/ood_app.rb
 
 OodApp.configure do |config|
-  config.files_rack_app = OodApp::FilesRackApp.new route_path: '/files', route_helper: 'files'
-
-  # To disable this route completely, uncomment the line below
-  #config.files_rack_app = nil
+  config.routes.files_rack_app = false
 end
+```
+
+To add a new route:
+
+```ruby
+# config/routes.rb
+
+# rename URI from '/files' to '/dataroot'
+mount OodApp::FilesRackApp.new => '/dataroot', as: :files
+
+# create new route with root set to '/tmp' on filesystem
+mount OodApp::FilesRackApp.new(root: '/tmp') => '/tmp', as: :tmp
+```
+
+### Wiki Static Page Engine
+
+This gem comes with a wiki static page engine. It uses the supplied markdown
+handler to display GitHub style wiki pages.
+
+By default the route is generated for you:
+
+```ruby
+# config/routes.rb
+
+get 'wiki/*page' => 'ood_app/wiki#show', as: :wiki, content_path: 'wiki'
+```
+
+and can be accessed within your app by
+
+```erb
+<%= link_to "Documentation", wiki_path('Home') %>
+```
+
+To disable this generated route:
+
+```ruby
+# config/initializers/ood_app.rb
+
+OodApp.configure do |config|
+  config.routes.wiki = false
+end
+```
+
+To change (disable route first) or add a new route:
+
+```ruby
+# config/routes.rb
+
+# can modify URI as well as file system content path where files reside
+get 'tutorial/*page' => 'ood_app/wiki#show', as: :tutorial, content_path: '/path/to/my_tutorial'
+
+# can use your own controller
+get 'wiki/*page' => 'my_wiki#show', as: :wiki, content_path: 'wiki'
+```
+
+You can use your own controller by including the appropriate concern:
+
+```ruby
+# app/controllers/my_wiki_controller.rb
+class MyWikiController < ApplicationController
+  include OodApp::WikiPage
+
+  layout :layout_for_page
+
+  private
+    def layout_for_page
+      'wiki_layout'
+    end
+end
+```
+
+And add a show view for this controller:
+
+```erb
+<%# app/views/my_wiki/show.html.erb %>
+
+<div class="ood_app markdown">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <%= render file: @page %>
+    </div>
+  </div>
+</div>
 ```
 
 ### Markdown Handler
