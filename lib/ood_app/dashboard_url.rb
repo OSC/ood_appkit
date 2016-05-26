@@ -1,6 +1,10 @@
 module OodApp
   # A class used to handle URLs for the system Dashboard app.
   class DashboardUrl
+    # The title for this URL
+    # @return [String] the title of the URL
+    attr_reader :title
+
     # @param title [String] the title of the URL
     # @param base_url [String] the base URL used to access this app
     # @param template [String] the template used to generate URLs for this app

@@ -1,6 +1,10 @@
 module OodApp
   # A class used to handle URLs for the system Files app.
   class FilesUrl
+    # The title for this URL
+    # @return [String] the title of the URL
+    attr_reader :title
+
     # @param title [String] the title of the URL
     # @param base_url [String] the base URL used to access this app
     # @param fs_url [String] the URL used to request a filesystem view in the app
