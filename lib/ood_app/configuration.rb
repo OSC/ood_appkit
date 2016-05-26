@@ -31,6 +31,10 @@ module OodApp
     # @return [OpenStruct] whether to generate routes for apps
     attr_accessor :routes
 
+    # Override Boostrap SASS variables in app
+    # @return [OpenStruct] bootstrap variables to override
+    attr_accessor :bootstrap
+
     # Customize configuration for this object.
     # @yield [self]
     def configure
@@ -63,6 +67,17 @@ module OodApp
         files_rack_app: true,
         wiki: true
       )
+
+      # Override Bootstrap SASS variables
+      self.bootstrap = OpenStruct.new(
+        navbar_inverse_bg: '#53565a',
+        navbar_inverse_link_color: '#fff',
+        navbar_inverse_color: '$navbar-inverse-link-color',
+        navbar_inverse_link_hover_color: 'darken($navbar-inverse-link-color, 20%)',
+        navbar_inverse_brand_color: '$navbar-inverse-link-color',
+        navbar_inverse_brand_hover_color: '$navbar-inverse-link-hover-color'
+      )
+      ENV.each {|k, v| /^BOOTSTRAP_(?<name>.+)$/ =~ k ? self.bootstrap[name.downcase] = v : nil}
     end
   end
 end

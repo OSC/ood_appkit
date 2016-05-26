@@ -182,6 +182,55 @@ And add a show view for this controller:
 </div>
 ```
 
+### Override Bootstrap Variables
+
+You can easily override any bootstrap variable using environment variables:
+
+```bash
+# BOOTSTRAP_<variable>="<value>"
+
+# Change font sizes
+BOOTSTRAP_FONT_SIZE_H1='50px'
+BOOTSTRAP_FONT_SIZE_H2='24px'
+
+# Re-use variables
+BOOTSTRAP_GRAY_BASE='#000'
+BOOTSTRAP_GRAY_DARKER='lighten($gray-base, 13.5%)'
+BOOTSTRAP_GRAY_DARK='lighten($gray-base, 20%)'
+```
+
+The variables can also be overridden in an initializer:
+
+```ruby
+# config/initializers/ood_app.rb
+
+OodApp.configure do |config|
+  # These are the defaults
+  config.bootstrap.navbar_inverse_bg = '#53565a'
+  config.bootstrap.navbar_inverse_link_color = '#fff'
+  config.bootstrap.navbar_inverse_color = '$navbar-inverse-link-color'
+  config.bootstrap.navbar_inverse_link_hover_color = 'darken($navbar-inverse-link-color, 20%)'
+  config.bootstrap.navbar_inverse_brand_color = '$navbar-inverse-link-color'
+  config.bootstrap.navbar_inverse_brand_hover_color = '$navbar-inverse-link-hover-color'
+end
+```
+
+You **MUST** import the bootstrap overrides into your stylesheets
+for these to take effect
+
+```scss
+// app/assets/stylesheets/application.scss
+
+// load the bootstrap sprockets first
+@import "bootstrap-sprockets";
+
+// this MUST occur before you import bootstrap
+@import "ood_app/bootstrap-overrides";
+
+// this MUST occur after the bootstrap overrides
+@import "bootstrap";
+```
+
 ### Markdown Handler
 
 A simple markdown handler is included with this gem. Any views with the
@@ -222,3 +271,44 @@ It is also included if you import the default stylesheet:
 
 @import "ood_app";
 ```
+
+## Branding Features
+
+To take advantage of branding features you must import it in your stylesheet:
+
+```scss
+// app/assets/stylesheets/application.scss
+
+@import "ood_app/branding";
+```
+
+It is also included if you import the default stylesheet:
+
+
+```scss
+// app/assets/stylesheets/application.scss
+
+@import "ood_app";
+```
+
+### Navbar Breadcrumbs
+
+One such branding feature is the `navbar-breadcrumbs`. It is used to accentuate
+the tree like style of the app in the navbar. It is used as such:
+
+```erb
+<nav class="ood-app navbar navbar-inverse navbar-static-top" role="navigation">
+  <div class="navbar-header">
+    ...
+    <ul class="navbar-breadcrumbs">
+      <li><%= link_to 'Home', '/path/to/home' %></li>
+      <li><%= link_to 'MyApp', '/path/to/myapp' %></li>
+      <li><%= link_to 'Meshes', '/path/to/meshes' %></li>
+    </ul>
+  </div>
+
+  ...
+</nav>
+```
+
+In particular you must include `ood-app` as a class in the `nav` tag.
