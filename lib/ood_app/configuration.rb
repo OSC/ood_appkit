@@ -58,9 +58,18 @@ module OodApp
       )
 
       # Initialize URL handlers for system apps
-      self.dashboard = DashboardUrl.new(base_url: ENV['OOD_DASHBOARD_URL'] || '/pun/sys/dashboard')
-      self.shell     = ShellUrl.new(base_url: ENV['OOD_SHELL_URL'] || '/pun/sys/shell')
-      self.files     = FilesUrl.new(base_url: ENV['OOD_FILES_URL'] || '/pun/sys/files')
+      self.dashboard = DashboardUrl.new(
+        title:    ENV['OOD_DASHBOARD_TITLE'] || 'Dashboard',
+        base_url: ENV['OOD_DASHBOARD_URL']   || '/pun/sys/dashboard'
+      )
+      self.shell     = ShellUrl.new(
+        title:    ENV['OOD_SHELL_TITLE'] || 'Shell',
+        base_url: ENV['OOD_SHELL_URL']   || '/pun/sys/shell'
+      )
+      self.files     = FilesUrl.new(
+        title:    ENV['OOD_FILES_TITLE'] || 'Files',
+        base_url: ENV['OOD_FILES_URL']   || '/pun/sys/files'
+      )
 
       # Add routes for useful features
       self.routes = OpenStruct.new(

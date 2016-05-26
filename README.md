@@ -10,71 +10,88 @@ Generated using:
 
 #### Dashboard URL
 
-```ruby
-# access dashboard url for the link "back to dashboard"
-OodApp.dashboard.url # /pun/sys/dashboard
+```erb
+<%= link_to OodApp.dashboard.title, OodApp.dashboard.url.to_s %>
 ```
 
-You can change the base url using `OOD_DASHBOARD_URL` env var or modifying the
-configuration in an initializer:
+You can change the options using environment variables:
+
+```bash
+OOD_DASHBOARD_URL=/pun/sys/dashboard
+OOD_DASHBOARD_TITLE=Dashboard
+```
+
+Or by modifying the configuration in an initializer:
 
 ```ruby
 # config/initializers/ood_app.rb
 
 OodApp.configure do |config|
-  config.dashboard = OodApp::DashboardUrl.new base_url: '/pun/sys/dashboard'
+  config.dashboard = OodApp::DashboardUrl.new title: 'Dashboard', base_url: '/pun/sys/dashboard'
 end
 ```
 
 #### Files App
 
-```ruby
-# url to launch files app
-OodApp.files.url
+```erb
+<%# Link to the Files app %>
+<%= link_to OodApp.files.title, OodApp.files.url.to_s %>
 
-# url to open files app to specified directory (accepts any object with `#to_s`)
-OodApp.files.url(path: "/nfs/17/efranz/ood_dev")
-OodApp.files.url(path: Pathname.new("/nfs/17/efranz/ood_dev"))
+<%# Link to open files app to specified directory %>
+<%= link_to "/path/to/file", OodApp.files.url(path: "/path/to/file").to_s %>
+<%= link_to "/path/to/file", OodApp.files.url(path: Pathname.new("/path/to/file")).to_s %>
 
-# url to retrieve API information for specified path
-OodApp.files.api(path: "/nfs/17/efranz/ood_dev")
+<%# Link to retrieve API info for given file %>
+<%= link_to "/path/to/file", OodApp.files.api(path: "/path/to/file").to_s %>
 ```
 
-You can change the base url using `OOD_FILES_URL` env var or modifying the
-configuration in an initializer:
+You can change the options using environment variables:
+
+```bash
+OOD_FILES_URL=/pun/sys/files
+OOD_FILES_TITLE=Files
+```
+
+Or by modifying the configuration in an initializer:
 
 ```ruby
 # config/initializers/ood_app.rb
 
 OodApp.configure do |config|
-  config.files = OodApp::FilesUrl.new base_url: '/pun/sys/files'
+  config.files = OodApp::FilesUrl.new title: 'Files', base_url: '/pun/sys/files'
 end
 ```
 
 #### Shell App
 
-```ruby
-# url to launch shell app
-OodApp.shell.url
+```erb
+<%# Link to the Shell app %>
+<%= link_to OodApp.shell.title, OodApp.shell.url.to_s %>
 
-# url to launch shell app for specified host
-OodApp.shell.url(host: "ruby")
+<%# Link to launch Shell app for specified host %>
+<%= link_to "Ruby Shell", OodApp.shell.url(host: "ruby").to_s %>
 
-# url to launch shell app in specified directory
-OodApp.shell.url(path: "/nfs/17/efranz/ood_dev")
+<%# Link to launch Shell app in specified directory %>
+<%= link_to "Shell in /path/to/dir", OodApp.shell.url(path: "/path/to/dir").to_s %>
 
-# url to launch shell app for specified host in directory
-OodApp.shell.url(host: "ruby", path: "/nfs/17/efranz/ood_dev")
+<%# Link to launch Shell app for specified host in directory %>
+<%= link_to "Ruby in /path/to/dir", OodApp.shell.url(host: "ruby", path: "/path/to/dir").to_s %>
 ```
 
-You can change the base url using `OOD_SHELL_URL` env var or modifying the
-configuration in an initializer:
+You can change the options using environment variables:
+
+```bash
+OOD_SHELL_URL=/pun/sys/shell
+OOD_SHELL_TITLE=Shell
+```
+
+Or by modifying the configuration in an initializer:
 
 ```ruby
 # config/initializers/ood_app.rb
 
 OodApp.configure do |config|
-  config.shell = OodApp::ShellUrl.new base_url: '/pun/sys/shell'
+  config.shell = OodApp::ShellUrl.new title: 'Shell', base_url: '/pun/sys/shell'
 end
 ```
 

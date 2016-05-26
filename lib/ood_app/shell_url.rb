@@ -1,10 +1,12 @@
 module OodApp
   # A class used to handle URLs for the system Shell app.
   class ShellUrl
+    # @param title [String] the title of the URL
     # @param base_url [String] the base URL used to access this app
     # @param template [String] the template used to generate URLs for this app
     # @see https://www.rfc-editor.org/rfc/rfc6570.txt RFC describing template format
-    def initialize(base_url: '/', ssh_url: '/ssh', template: '{/url*}/{host}{+path}')
+    def initialize(title: '', base_url: '/', ssh_url: '/ssh', template: '{/url*}/{host}{+path}')
+      @title = title
       @template = Addressable::Template.new template
 
       # Break up into arrays of strings

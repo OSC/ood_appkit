@@ -1,12 +1,14 @@
 module OodApp
   # A class used to handle URLs for the system Files app.
   class FilesUrl
+    # @param title [String] the title of the URL
     # @param base_url [String] the base URL used to access this app
     # @param fs_url [String] the URL used to request a filesystem view in the app
     # @param api_url [String] the URL used to request the app's api
     # @param template [String] the template used to generate URLs for this app
     # @see https://www.rfc-editor.org/rfc/rfc6570.txt RFC describing template format
-    def initialize(base_url: '/', fs_url: '/fs', api_url: '/api/v1/fs', template: '{/url*}{+path}')
+    def initialize(title: '', base_url: '/', fs_url: '/fs', api_url: '/api/v1/fs', template: '{/url*}{+path}')
+      @title = title
       @template = Addressable::Template.new template
 
       # Break up into arrays of strings
