@@ -2,7 +2,7 @@
 
 Generated using:
 
-    rails plugin new osc_machete_rails --full --skip-bundle
+    rails plugin new ood_appkit --full --skip-bundle
 
 ## Usage
 
