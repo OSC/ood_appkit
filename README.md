@@ -6,6 +6,19 @@ Generated using:
 
 ## Usage
 
+### Rake Tasks
+
+#### reset
+
+Running this rake task
+
+```bash
+bin/rake ood_appkit:reset
+```
+
+will clear the Rails cache and update the timestamp on the `tmp/restart.txt`
+file that is used by Passenger to decide whether to restart the application.
+
 ### URL Handlers for System Apps
 
 #### Dashboard URL

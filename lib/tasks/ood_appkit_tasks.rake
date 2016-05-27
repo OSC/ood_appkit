@@ -1,4 +1,6 @@
-# desc "Explaining what the task does"
-# task :ood_appkit do
-#   # Task goes here
-# end
+namespace :ood_appkit do
+  desc "Restart the Passenger process for this App"
+  task :restart => "tmp:clear" do
+    touch "tmp/restart.txt"
+  end
+end
