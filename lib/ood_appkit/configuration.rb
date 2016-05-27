@@ -1,7 +1,7 @@
 require 'redcarpet'
 require 'ostruct'
 
-module OodApp
+module OodAppkit
   # An object that stores and adds configuration options.
   module Configuration
     # Location where app data is stored on local filesystem

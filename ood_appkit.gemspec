@@ -1,12 +1,12 @@
 $:.push File.expand_path("../lib", __FILE__)
 
 # Maintain your gem's version:
-require "ood_app/version"
+require "ood_appkit/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  s.name        = "ood_app"
-  s.version     = OodApp::VERSION
+  s.name        = "ood_appkit"
+  s.version     = OodAppkit::VERSION
   s.authors     = ["Eric Franz"]
   s.email       = ["efranz@osc.edu"]
   s.homepage    = "https://github.com/osc"

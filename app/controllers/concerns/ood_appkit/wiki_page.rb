@@ -1,6 +1,6 @@
 # A concern that can be included into an `ApplicationController` that displays
 # static relative-linked pages.
-module OodApp::WikiPage
+module OodAppkit::WikiPage
   extend ActiveSupport::Concern
 
   # 'included do' causes the included code to be evaluated in the context where

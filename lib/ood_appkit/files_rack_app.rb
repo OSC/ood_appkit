@@ -1,4 +1,4 @@
-module OodApp
+module OodAppkit
   # Middleware that serves entries below the `root` given, according to the
   # path info of the Rack request.
   # @see http://www.rubydoc.info/github/rack/rack/master/Rack/Directory Descripton of `Rack::Directory`
@@ -8,7 +8,7 @@ module OodApp
     attr_accessor :root
 
     # @param root [String, #to_s] the root path
-    def initialize(root: OodApp.dataroot)
+    def initialize(root: OodAppkit.dataroot)
       @root = root.to_s
     end
 

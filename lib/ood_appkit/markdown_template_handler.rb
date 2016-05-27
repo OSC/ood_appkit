@@ -1,4 +1,4 @@
-module OodApp
+module OodAppkit
   # Class used to handle markdown views in `ActionView::Template`
   module MarkdownTemplateHandler
     # String of ruby code to be evaluated when rendering the view
@@ -18,10 +18,10 @@ module OodApp
     private
       # Markdown renderer used
       def self.markdown
-        @markdown ||= OodApp.markdown
+        @markdown ||= OodAppkit.markdown
       end
   end
 end
 
 # Register this handler for the various markdown extensions
-ActionView::Template.register_template_handler :md, :markdown, OodApp::MarkdownTemplateHandler
+ActionView::Template.register_template_handler :md, :markdown, OodAppkit::MarkdownTemplateHandler

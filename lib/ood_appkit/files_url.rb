@@ -1,4 +1,4 @@
-module OodApp
+module OodAppkit
   # A class used to handle URLs for the system Files app.
   class FilesUrl
     # The title for this URL
