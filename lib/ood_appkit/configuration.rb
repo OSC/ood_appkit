@@ -15,6 +15,10 @@ module OodAppkit
     # @return [Redcarpet::Markdown] the markdown renderer used
     attr_accessor :markdown
 
+    # Public assets url handler
+    # @return [PublicUrl] the url handler for the publicly available assets
+    attr_accessor :public
+
     # System dashboard app url handler
     # @return [DashboardUrl] the url handler for the system dashboard app
     attr_accessor :dashboard
@@ -58,6 +62,10 @@ module OodAppkit
       )
 
       # Initialize URL handlers for system apps
+      self.public    = PublicUrl.new(
+        title:    ENV['OOD_PUBLIC_TITLE'] || 'Public Assets',
+        base_url: ENV['OOD_PUBLIC_URL']   || '/public'
+      )
       self.dashboard = DashboardUrl.new(
         title:    ENV['OOD_DASHBOARD_TITLE'] || 'Dashboard',
         base_url: ENV['OOD_DASHBOARD_URL']   || '/pun/sys/dashboard'

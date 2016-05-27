@@ -21,6 +21,37 @@ file that is used by Passenger to decide whether to restart the application.
 
 ### URL Handlers for System Apps
 
+#### Public URL
+
+This is the URL used to access publicly available assets provided by the OOD
+infrastructure, e.g., the `favicon.ico`.
+
+```erb
+<%= favicon_link_tag nil, href: OodAppkit.public.url.join('favicon.ico') %>
+```
+
+Note: We used `nil` here as the source otherwise Rails will try to prepend the
+`RAILS_RELATIVE_URL_ROOT` to it. We explicitly define the link using `href:`
+instead.
+
+You can change the options using environment variables:
+
+```bash
+OOD_PUBLIC_URL='/public'
+OOD_PUBLIC_TITLE='Public Assets'
+```
+
+Or by modifying the configuration in an initializer:
+
+```ruby
+# config/initializers/ood_appkit.rb
+
+OodAppkit.configure do |config|
+  # Defaults
+  config.public = OodAppkit::PublicUrl.new title: 'Public Assets', base_url: '/public'
+end
+```
+
 #### Dashboard URL
 
 ```erb
@@ -30,8 +61,8 @@ file that is used by Passenger to decide whether to restart the application.
 You can change the options using environment variables:
 
 ```bash
-OOD_DASHBOARD_URL=/pun/sys/dashboard
-OOD_DASHBOARD_TITLE=Dashboard
+OOD_DASHBOARD_URL='/pun/sys/dashboard'
+OOD_DASHBOARD_TITLE='Dashboard'
 ```
 
 Or by modifying the configuration in an initializer:
@@ -40,6 +71,7 @@ Or by modifying the configuration in an initializer:
 # config/initializers/ood_appkit.rb
 
 OodAppkit.configure do |config|
+  # Defaults
   config.dashboard = OodAppkit::DashboardUrl.new title: 'Dashboard', base_url: '/pun/sys/dashboard'
 end
 ```
@@ -61,8 +93,8 @@ end
 You can change the options using environment variables:
 
 ```bash
-OOD_FILES_URL=/pun/sys/files
-OOD_FILES_TITLE=Files
+OOD_FILES_URL='/pun/sys/files'
+OOD_FILES_TITLE='Files'
 ```
 
 Or by modifying the configuration in an initializer:
@@ -71,6 +103,7 @@ Or by modifying the configuration in an initializer:
 # config/initializers/ood_appkit.rb
 
 OodAppkit.configure do |config|
+  # Defaults
   config.files = OodAppkit::FilesUrl.new title: 'Files', base_url: '/pun/sys/files'
 end
 ```
@@ -94,8 +127,8 @@ end
 You can change the options using environment variables:
 
 ```bash
-OOD_SHELL_URL=/pun/sys/shell
-OOD_SHELL_TITLE=Shell
+OOD_SHELL_URL='/pun/sys/shell'
+OOD_SHELL_TITLE='Shell'
 ```
 
 Or by modifying the configuration in an initializer:
@@ -104,6 +137,7 @@ Or by modifying the configuration in an initializer:
 # config/initializers/ood_appkit.rb
 
 OodAppkit.configure do |config|
+  # Defaults
   config.shell = OodAppkit::ShellUrl.new title: 'Shell', base_url: '/pun/sys/shell'
 end
 ```
@@ -217,7 +251,7 @@ And add a show view for this controller:
 You can easily override any bootstrap variable using environment variables:
 
 ```bash
-# BOOTSTRAP_<variable>="<value>"
+# BOOTSTRAP_<variable>='<value>'
 
 # Change font sizes
 BOOTSTRAP_FONT_SIZE_H1='50px'
@@ -271,6 +305,7 @@ The renderer can be modified as such:
 # config/initializers/ood_appkit.rb
 
 OodAppkit.configure do |config|
+  # Default
   config.markdown = Redcarpet::Markdown.new(
     Redcarpet::Render::HTML,
     autolink: true,

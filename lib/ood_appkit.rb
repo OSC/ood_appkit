@@ -2,6 +2,7 @@ require 'addressable'
 
 require 'ood_appkit/version'
 require 'ood_appkit/configuration'
+require 'ood_appkit/public_url'
 require 'ood_appkit/dashboard_url'
 require 'ood_appkit/shell_url'
 require 'ood_appkit/files_url'
