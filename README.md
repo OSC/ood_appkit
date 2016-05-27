@@ -378,3 +378,7 @@ the tree like style of the app in the navbar. It is used as such:
 
 Note that you must include `ood-appkit` as a class in the `nav` tag. The
 breadcrumbs style will resemble the `navbar-brand` style.
+
+## License
+
+This gem is released under the [MIT License](http://www.opensource.org/licenses/MIT).
