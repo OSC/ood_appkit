@@ -318,9 +318,9 @@ the tree like style of the app in the navbar. It is used as such:
   <div class="navbar-header">
     ...
     <ul class="navbar-breadcrumbs">
-      <li><%= link_to 'Home', '/path/to/home' %></li>
-      <li><%= link_to 'MyApp', '/path/to/myapp' %></li>
-      <li><%= link_to 'Meshes', '/path/to/meshes' %></li>
+      <li><%= link_to OodApp.dashboard.title, OodApp.dashboard.url.to_s %></li>
+      <li><%= link_to 'MyApp', root_path %></li>
+      <li><%= link_to 'Meshes', meshes_path %></li>
     </ul>
   </div>
 
@@ -328,4 +328,5 @@ the tree like style of the app in the navbar. It is used as such:
 </nav>
 ```
 
-In particular you must include `ood-app` as a class in the `nav` tag.
+Note that you must include `ood-app` as a class in the `nav` tag. The
+breadcrumbs style will resemble the `navbar-brand` style.
