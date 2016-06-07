@@ -7,11 +7,13 @@ require "ood_appkit/version"
 Gem::Specification.new do |s|
   s.name        = "ood_appkit"
   s.version     = OodAppkit::VERSION
+  s.platform      = Gem::Platform::RUBY
   s.authors     = ["Eric Franz"]
   s.email       = ["efranz@osc.edu"]
-  s.homepage    = "https://github.com/osc"
-  s.summary     = "Interface with other apps and deploy your app using this gem."
-  s.description = "Interface with other apps and deploy your app using this gem."
+  s.summary     = "Open OnDemand gem to help build OOD apps and interface with other OOD apps."
+  s.description = "Provides an interface to working with other Open OnDemand (OOD) apps. It provides a dataroot for OOD apps to write data to and common assets and helper objects for providing branding and documentation within the apps."
+  s.homepage    = "https://github.com/OSC/ood_appkit"
+  s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
