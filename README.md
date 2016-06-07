@@ -1,8 +1,12 @@
-## Develop
+## Installation
 
-Generated using:
+To use, add this line to your application's Gemfile:
 
-    rails plugin new ood_appkit --full --skip-bundle
+    gem 'ood_appkit'
+
+And then execute:
+
+    bundle install
 
 ## Usage
 
@@ -378,6 +382,13 @@ the tree like style of the app in the navbar. It is used as such:
 
 Note that you must include `ood-appkit` as a class in the `nav` tag. The
 breadcrumbs style will resemble the `navbar-brand` style.
+
+## Develop
+
+Generated using:
+
+    rails plugin new ood_appkit --full --skip-bundle
+
 
 ## License
 
