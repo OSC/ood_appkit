@@ -3,7 +3,7 @@ module OodAppkit
   #
   #     [2016-06-17 15:31:01 -0400 sys/dashboard]  INFO  GET...
   #
-  class LogFormatter < ActiveSupport::Logger::SimpleFormatter
+  class LogFormatter
     def call(severity, timestamp, progname, msg)
       severity_d = severity ? severity[0,5].rjust(5).upcase : "UNKNO"
       timestamp_d = timestamp ? timestamp.localtime : Time.now.localtime
