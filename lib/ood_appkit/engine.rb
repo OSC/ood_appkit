@@ -9,12 +9,8 @@ module OodAppkit
     # Confirm the `OodAppkit.dataroot` configuration option was set
     config.after_initialize do
       raise UndefinedDataroot, "OodAppkit.dataroot must be defined (default: ENV['OOD_DATAROOT'])" unless OodAppkit.dataroot
-    end
 
-    config.to_prepare do
-      # TODO:
-      # make the helper available to all views
-      # i.e. ApplicationController.helper(OodBannerHelper)
+      OodAppkit.setup_ood_log_formatting if OodAppkit.use_ood_log_formatting && ::Rails.env.production?
     end
 
     # An exception raised when `OodAppkit.dataroot` configuration option is undefined

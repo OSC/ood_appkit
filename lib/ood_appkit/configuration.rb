@@ -39,6 +39,11 @@ module OodAppkit
     # @return [OpenStruct] bootstrap variables to override
     attr_accessor :bootstrap
 
+    # Set to false if you don't want Rails.logger formatter
+    # to use LogFormatter and lograge to be enabled automatically
+    # @return [boolean] whether to use OodAppkit log formatting in production
+    attr_accessor :use_ood_log_formatting
+
     # Customize configuration for this object.
     # @yield [self]
     def configure
@@ -95,6 +100,27 @@ module OodAppkit
         navbar_inverse_brand_hover_color: '$navbar-inverse-link-hover-color'
       )
       ENV.each {|k, v| /^BOOTSTRAP_(?<name>.+)$/ =~ k ? self.bootstrap[name.downcase] = v : nil}
+
+      self.use_ood_log_formatting = true
+    end
+
+    def setup_ood_log_formatting
+      ::Rails.logger.formatter = LogFormatter.new
+
+      # ActiveSupport::TaggedLogging.new calls
+      #
+      #     logger.formatter.extend(Formatter)
+      #
+      # in an undocumented submodule ActiveSupport::TaggedLogging::Formatter.
+      # So to modify a TaggedLogging logger with another formatter we must
+      # extend our formatter in the same way.
+      if defined?( ActiveSupport::TaggedLogging  ) && ::Rails.logger.kind_of?( ActiveSupport::TaggedLogging )
+        ::Rails.logger.formatter.extend(ActiveSupport::TaggedLogging::Formatter)
+      end
+
+      ::Rails.logger.progname = ENV['APP_TOKEN'] if ENV['APP_TOKEN']
+
+      #TODO: also include lograge AND enable lograge for production env
     end
   end
 end
