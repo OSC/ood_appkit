@@ -6,11 +6,19 @@ module OodAppkit
       OodAppkit.set_default_configuration
     end
 
-    # Confirm the `OodAppkit.dataroot` configuration option was set
+    # enable lograge if gem available
+    initializer "lograge" do |app|
+      if OodAppkit.use_ood_log_formatting && app.config.respond_to?(:lograge)
+        app.config.lograge.enabled = true
+      end
+    end
+
     config.after_initialize do
+      # Confirm the `OodAppkit.dataroot` configuration option was set
       raise UndefinedDataroot, "OodAppkit.dataroot must be defined (default: ENV['OOD_DATAROOT'])" unless OodAppkit.dataroot
 
-      OodAppkit.setup_ood_log_formatting if OodAppkit.use_ood_log_formatting && ::Rails.env.production?
+      # setup logger to use proper formatter and set progname
+      OodAppkit.setup_ood_log_formatting if OodAppkit.use_ood_log_formatting
     end
 
     # An exception raised when `OodAppkit.dataroot` configuration option is undefined

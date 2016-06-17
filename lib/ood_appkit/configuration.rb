@@ -101,7 +101,7 @@ module OodAppkit
       )
       ENV.each {|k, v| /^BOOTSTRAP_(?<name>.+)$/ =~ k ? self.bootstrap[name.downcase] = v : nil}
 
-      self.use_ood_log_formatting = true
+      self.use_ood_log_formatting = ::Rails.env.production?
     end
 
     def setup_ood_log_formatting
@@ -119,8 +119,6 @@ module OodAppkit
       end
 
       ::Rails.logger.progname = ENV['APP_TOKEN'] if ENV['APP_TOKEN']
-
-      #TODO: also include lograge AND enable lograge for production env
     end
   end
 end
