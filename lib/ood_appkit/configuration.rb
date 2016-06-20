@@ -42,7 +42,7 @@ module OodAppkit
     # Set to false if you don't want Rails.logger formatter
     # to use LogFormatter and lograge to be enabled automatically
     # @return [boolean] whether to use OodAppkit log formatting in production
-    attr_accessor :use_ood_log_formatting
+    attr_accessor :enable_log_formatter
 
     # Customize configuration for this object.
     # @yield [self]
@@ -101,24 +101,7 @@ module OodAppkit
       )
       ENV.each {|k, v| /^BOOTSTRAP_(?<name>.+)$/ =~ k ? self.bootstrap[name.downcase] = v : nil}
 
-      self.use_ood_log_formatting = ::Rails.env.production?
-    end
-
-    def setup_ood_log_formatting
-      ::Rails.logger.formatter = LogFormatter.new
-
-      # ActiveSupport::TaggedLogging.new calls
-      #
-      #     logger.formatter.extend(Formatter)
-      #
-      # in an undocumented submodule ActiveSupport::TaggedLogging::Formatter.
-      # So to modify a TaggedLogging logger with another formatter we must
-      # extend our formatter in the same way.
-      if defined?( ActiveSupport::TaggedLogging  ) && ::Rails.logger.kind_of?( ActiveSupport::TaggedLogging )
-        ::Rails.logger.formatter.extend(ActiveSupport::TaggedLogging::Formatter)
-      end
-
-      ::Rails.logger.progname = ENV['APP_TOKEN'] if ENV['APP_TOKEN']
+      self.enable_log_formatter = ::Rails.env.production?
     end
   end
 end

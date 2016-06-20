@@ -8,7 +8,7 @@ module OodAppkit
 
     # enable lograge if gem available
     initializer "lograge" do |app|
-      if OodAppkit.use_ood_log_formatting && app.config.respond_to?(:lograge)
+      if OodAppkit.enable_log_formatter && app.config.respond_to?(:lograge)
         app.config.lograge.enabled = true
       end
     end
@@ -18,7 +18,7 @@ module OodAppkit
       raise UndefinedDataroot, "OodAppkit.dataroot must be defined (default: ENV['OOD_DATAROOT'])" unless OodAppkit.dataroot
 
       # setup logger to use proper formatter and set progname
-      OodAppkit.setup_ood_log_formatting if OodAppkit.use_ood_log_formatting
+      LogFormatter.setup if OodAppkit.enable_log_formatter
     end
 
     # An exception raised when `OodAppkit.dataroot` configuration option is undefined
