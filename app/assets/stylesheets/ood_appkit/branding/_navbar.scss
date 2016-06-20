@@ -13,24 +13,22 @@
   > img {
     display: block;
   }
-
-  @media (min-width: $grid-float-breakpoint) {
-    .navbar > .container &,
-    .navbar > .container-fluid & {
-      margin-left: -$navbar-padding-horizontal;
-    }
-  }
 }
 
 .ood-appkit.navbar {
   ul.navbar-breadcrumbs {
     list-style-type: none;
-    display: inline;
     margin: 0;
     padding: 0;
 
+    @media (min-width: $grid-float-breakpoint) {
+      & {
+        margin-left: -$navbar-padding-horizontal;
+      }
+    }
+
     > li {
-      display: inline;
+      float: left;
 
       > a {
         @extend %navbar-brand;
