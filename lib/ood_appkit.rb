@@ -8,6 +8,7 @@ require 'ood_appkit/shell_url'
 require 'ood_appkit/files_url'
 require 'ood_appkit/files_rack_app'
 require 'ood_appkit/markdown_template_handler'
+require 'ood_appkit/log_formatter'
 
 # The main namespace for OodAppkit. Provides a global configuration.
 module OodAppkit

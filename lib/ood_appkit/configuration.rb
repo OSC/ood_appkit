@@ -39,6 +39,11 @@ module OodAppkit
     # @return [OpenStruct] bootstrap variables to override
     attr_accessor :bootstrap
 
+    # Set to false if you don't want Rails.logger formatter
+    # to use LogFormatter and lograge to be enabled automatically
+    # @return [boolean] whether to use OodAppkit log formatting in production
+    attr_accessor :enable_log_formatter
+
     # Customize configuration for this object.
     # @yield [self]
     def configure
@@ -95,6 +100,8 @@ module OodAppkit
         navbar_inverse_brand_hover_color: '$navbar-inverse-link-hover-color'
       )
       ENV.each {|k, v| /^BOOTSTRAP_(?<name>.+)$/ =~ k ? self.bootstrap[name.downcase] = v : nil}
+
+      self.enable_log_formatter = ::Rails.env.production?
     end
   end
 end

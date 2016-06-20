@@ -250,6 +250,7 @@ And add a show view for this controller:
 </div>
 ```
 
+
 ### Override Bootstrap Variables
 
 You can easily override any bootstrap variable using environment variables:
@@ -340,6 +341,39 @@ It is also included if you import the default stylesheet:
 
 @import "ood_appkit";
 ```
+
+### Custom Log Formatting
+
+A custom log formatter is provided, along with lograge, to both reduce the
+amount of unnecessary logging in production but properly prefix each log with
+timestamp, log severity, and the name of the application. By default
+`enable_log_formatter` is set to true for the production environment, but you
+can turn it on all the time by using an initializer:
+
+```ruby
+# config/initializers/ood_appkit.rb
+
+OodAppkit.configure do |config|
+  # Default
+  config.enable_log_formatter = true
+end
+```
+
+This does several things things:
+
+1. enable lograge
+2. call `OodAppkit::LogFormatter.setup` which
+
+    * sets the formatter of the Rails logger to an instance of OodAppkit::LogFormatter
+    * and sets the `progname` of the Rails logger to the `APP_TOKEN` env var if it is set
+
+
+In production, a single log will look like:
+
+```
+[2016-06-20 10:23:59 -0400 sys/dashboard]  "INFO method=GET path=/pun/dev/dashboard/ format=html controller=dashboard action=index status=200 duration=297.15 view=290.20"
+```
+
 
 ## Branding Features
 
