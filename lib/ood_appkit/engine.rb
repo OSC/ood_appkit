@@ -1,3 +1,5 @@
+require 'lograge'
+
 module OodAppkit
   # The Rails Engine that defines the OodAppkit environment
   class Engine < Rails::Engine
@@ -8,7 +10,8 @@ module OodAppkit
 
     # enable lograge if gem available
     initializer "lograge" do |app|
-      if OodAppkit.enable_log_formatter && app.config.respond_to?(:lograge)
+      if OodAppkit.enable_log_formatter
+        # enable lograge to use with formatter
         app.config.lograge.enabled = true
       end
     end
