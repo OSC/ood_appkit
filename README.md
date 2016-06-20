@@ -371,7 +371,7 @@ This does several things things:
 In production, a single log will look like:
 
 ```
-[2016-06-20 10:23:59 -0400 sys/dashboard]  INFO method=GET path=/pun/dev/dashboard/ format=html controller=dashboard action=index status=200 duration=297.15 view=290.20 
+[2016-06-20 10:23:59 -0400 sys/dashboard]  "INFO method=GET path=/pun/dev/dashboard/ format=html controller=dashboard action=index status=200 duration=297.15 view=290.20"
 ```
 
 
