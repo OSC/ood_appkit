@@ -1,3 +1,5 @@
+require 'ood_support'
+
 module OodAppkit
   module Validators
     # Class used to determine if user is in valid list of groups
