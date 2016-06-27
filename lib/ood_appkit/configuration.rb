@@ -62,7 +62,7 @@ module OodAppkit
 
       # Initialize list of available clusters
       h = {}
-      h[:file] = ENV['OOD_CLUSTER'] if ENV['OOD_CLUSTERS']
+      h[:file] = ENV['OOD_CLUSTERS'] if ENV['OOD_CLUSTERS']
       self.clusters = Cluster.all h
 
       # Add markdown template support
