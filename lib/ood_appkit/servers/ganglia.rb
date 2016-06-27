@@ -10,13 +10,20 @@ module OodAppkit
       # @return [String] version of software
       attr_reader :version
 
-      # @param prefix [String] uri for ganglia server
-      # @param version [String] version of client software
-      def initialize(uri:, version:, **kwargs)
+      # @param scheme [String] scheme component of URI
+      # @param path [String] path component of URI
+      # @param query_values [Hash<String>] hash of query values
+      # @param version [String] version of server software
+      def initialize(scheme:, path:, query_values: {}, version:, **kwargs)
         super(kwargs)
 
         # uri
-        @uri = Addressable::URI.parse uri
+        @uri = Addressable::URI.new({
+          scheme: scheme,
+          host: host,
+          path: path,
+          query_values: query_values
+        })
 
         # version number
         @version = version

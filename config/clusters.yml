@@ -18,7 +18,10 @@ v1:
       ganglia:
         type: 'OodAppkit::Servers::Ganglia'
         host: 'cts05.osc.edu'
-        uri: '/gweb/graph.php?c=Oakley+nodes'
+        scheme: 'https'
+        path: '/gweb/graph.php'
+        query_values:
+          c: 'Oakley nodes'
         version: '3'
   ruby:
     validators:
@@ -44,7 +47,10 @@ v1:
       ganglia:
         type: 'OodAppkit::Servers::Ganglia'
         host: 'cts05.osc.edu'
-        uri: '/gweb/graph.php?c=Ruby'
+        scheme: 'https'
+        path: '/gweb/graph.php'
+        query_values:
+          c: 'Ruby'
         version: '3'
   quick:
     mixed_cluster: true
