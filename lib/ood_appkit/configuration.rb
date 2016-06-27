@@ -31,6 +31,10 @@ module OodAppkit
     # @return [FilesUrl] the url handler for the system files app
     attr_accessor :files
 
+    # System file editor app url handler
+    # @return [EditorUrl] the url handler for the system file editor app
+    attr_accessor :editor
+
     # Whether to auto-generate default routes for helpful apps/features
     # @return [OpenStruct] whether to generate routes for apps
     attr_accessor :routes
@@ -82,6 +86,10 @@ module OodAppkit
       self.files     = FilesUrl.new(
         title:    ENV['OOD_FILES_TITLE'] || 'Files',
         base_url: ENV['OOD_FILES_URL']   || '/pun/sys/files'
+      )
+      self.editor    = EditorUrl.new(
+        title:    ENV['OOD_EDITOR_TITLE'] || 'Editor',
+        base_url: ENV['OOD_EDITOR_URL']   || '/pun/sys/file-editor'
       )
 
       # Add routes for useful features
