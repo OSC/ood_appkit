@@ -112,6 +112,35 @@ OodAppkit.configure do |config|
 end
 ```
 
+#### File Editor App
+
+```erb
+<%# Link to the Editor app %>
+<%= link_to OodAppkit.editor.title, OodAppkit.editor.url.to_s %>
+
+<%# Link to open file editor app to edit specific file %>
+<%= link_to "Edit /path/to/file", OodAppkit.editor.edit(path: "/path/to/file").to_s %>
+<%= link_to "Edit /path/to/file", OodAppkit.editor.edit(path: Pathname.new("/path/to/file")).to_s %>
+```
+
+You can change the options using environment variables:
+
+```bash
+OOD_EDITOR_URL='/pun/sys/file-editor'
+OOD_EDITOR_TITLE='EDITOR'
+```
+
+Or by modifying the configuration in an initializer:
+
+```ruby
+# config/initializers/ood_appkit.rb
+
+OodAppkit.configure do |config|
+  # Defaults
+  config.editor = OodAppkit::EditorUrl.new title: 'Editor', base_url: '/pun/sys/file-editor'
+end
+```
+
 #### Shell App
 
 ```erb
