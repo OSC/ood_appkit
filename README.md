@@ -438,7 +438,7 @@ or link to:
 my_cluster = OodAppkit.clusters[:cluster1]
 
 # Check if this cluster is a mixed cluster (does it have different cluster
-nodes in it)
+# nodes in it)
 my_cluster.mixed_cluster?
 #=> false
 
