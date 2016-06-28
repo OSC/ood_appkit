@@ -443,7 +443,7 @@ my_cluster.mixed_cluster?
 #=> false
 
 # Check if it has a login server
-my_cluster.has_server? :login
+my_cluster.login_server?
 #=> true
 
 # View all available servers
@@ -456,7 +456,7 @@ my_cluster.servers
 #   }
 
 # Choose a particular server
-login_server = my_cluster.server :login
+login_server = my_cluster.login_server
 ```
 
 Depending on the type of server chosen, different helper methods will be
@@ -464,7 +464,7 @@ available to the developer. For all servers the `host` will be available:
 
 ```ruby
 # Choose a particular server
-login_server = my_cluster.server :login
+login_server = my_cluster.login_server
 
 # Get host for this server
 login_server.host
@@ -476,7 +476,7 @@ communicate with the servers
 
 ```ruby
 # Get the Resource Manager server (known to be Torque at your HPC center)
-torque_server = my_cluster.server :resource_mgr
+torque_server = my_cluster.resource_mgr_server
 
 # Get the path to the client library
 torque_server.lib.to_s
@@ -491,7 +491,7 @@ Web servers will have a URI method to access the server
 
 ```ruby
 # Get the Ganglia web server
-ganglia_server = my_cluster.server :ganglia
+ganglia_server = my_cluster.ganglia_server
 
 # Get URI used to access this web server
 ganglia_server.uri.to_s

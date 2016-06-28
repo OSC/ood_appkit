@@ -42,25 +42,6 @@ module OodAppkit
       @mixed_cluster = mixed_cluster
     end
 
-    # Determine whether requested server exists on cluster
-    # @param server [Symbol] server type
-    # @example Whether this cluster has login server
-    #   my_cluster.has_server? :login
-    #   #=> false
-    # @return [Boolean] whether server exists on cluster
-    def has_server?(server)
-      servers.has_key? server
-    end
-
-    # Return requested server
-    # @example Get login server
-    #   my_cluster.server :login
-    #   #=> #<OodAppkit::Server>
-    # @return [Server] requested server
-    def server(server)
-      servers.fetch(server, nil)
-    end
-
     # Whether this is a valid cluster
     # @example Whether I have access to this cluster
     #   my_cluster.valid?
@@ -74,6 +55,27 @@ module OodAppkit
     # @return [Boolean] whether this a mixed cluster
     def mixed_cluster?
       @mixed_cluster
+    end
+
+    # Grab object from {@servers} hash or check if it exists
+    # @param method_name the method name called
+    # @param arguments the arguments to the call
+    # @param block an optional block for the call
+    def method_missing(method_name, *arguments, &block)
+      if /^(.+)_server$/ =~ method_name.to_s
+        @servers.fetch($1.to_sym, nil)
+      elsif /^(.+)_server\?$/ =~ method_name.to_s
+        @servers.has_key? $1.to_sym
+      else
+        super
+      end
+    end
+
+    # Check if method ends with custom *_server or *_server?
+    # @param method_name the method name to check
+    # @return [Boolean]
+    def respond_to_missing?(method_name, include_private = false)
+      method_name.to_s.end_with?('_server', '_server?') || super
     end
 
     private
