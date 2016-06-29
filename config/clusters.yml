@@ -53,13 +53,16 @@ v1:
           c: 'Ruby'
         version: '3'
   quick:
-    mixed_cluster: true
+    hpc_cluster: false
     servers:
       resource_mgr:
         type: 'OodAppkit::Servers::Torque'
         host: 'quick-batch.osc.edu'
         prefix: '/usr/local/torque/5.1.1-1_fba25d92'
         version: '5.1.1'
+        sub_cluster:
+          - 'ruby'
+          - 'oakley'
       scheduler:
         type: 'OodAppkit::Servers::Moab'
         host: 'quick-batch.osc.edu'

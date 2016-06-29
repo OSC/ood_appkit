@@ -26,8 +26,8 @@ module OodAppkit
 
     # @param validators [Hash] hash of validations that describe the validators
     # @param servers [Hash] hash of servers with corresponding server info
-    # @param mixed_cluster [Boolean] whether this is a mixed cluster
-    def initialize(validators: {}, servers: {}, mixed_cluster: false)
+    # @param hpc_cluster [Boolean] whether this is an hpc-style cluster
+    def initialize(validators: {}, servers: {}, hpc_cluster: true)
       # Generate hash of validations
       @validators = validators.each_with_object({}) do |(k, v), h|
         h[k] = v[:type].constantize.new(v)
@@ -38,8 +38,8 @@ module OodAppkit
         h[k] = v[:type].constantize.new(v)
       end
 
-      # Is this a mixed cluster?
-      @mixed_cluster = mixed_cluster
+      # Is this an hpc-style cluster?
+      @hpc_cluster = hpc_cluster
     end
 
     # Whether this is a valid cluster
@@ -51,10 +51,10 @@ module OodAppkit
       !@validators.any? {|name, validator| !validator.valid?}
     end
 
-    # Whether this is a mixed cluster (e.g., has different cluster-type nodes)
-    # @return [Boolean] whether this a mixed cluster
-    def mixed_cluster?
-      @mixed_cluster
+    # Whether this is an hpc-style cluster (i.e., meant for heavy computation)
+    # @return [Boolean] whether this an hpc-style cluster
+    def hpc_cluster?
+      @hpc_cluster
     end
 
     # Grab object from {@servers} hash or check if it exists
@@ -81,7 +81,7 @@ module OodAppkit
     private
       # Parse the config file
       def self.parse_config(file)
-        YAML.load(File.read(file)).deep_symbolize_keys[VERSION]
+        YAML.load(File.read(file)).deep_symbolize_keys.fetch(VERSION, {})
       end
   end
 end
