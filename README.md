@@ -513,7 +513,7 @@ ganglia_server.uri.to_s
 #=> "https://www.ganglia.com/gweb/graph.php?c=MyCluster"
 
 # To add query values as options for the server
-ganglia_server.merge_query_values({g: 'cpu_report'}).to_s
+ganglia_server.merge_query_values(g: 'cpu_report').to_s
 #=> "https://www.ganglia.com/gweb/graph.php?c=MyCluster&g=cpu_report"
 ```
 
