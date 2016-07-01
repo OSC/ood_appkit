@@ -6,6 +6,10 @@ module OodAppkit
     # YAML configuration version
     VERSION = :v1
 
+    # Title of the cluster
+    # @return [String] title of cluster
+    attr_reader :title
+
     # Hash of validators this cluster validates against
     # @return [Hash<#valid?>] hash of validators
     attr_reader :validators
@@ -24,10 +28,14 @@ module OodAppkit
       end
     end
 
+    # @param title [String] title of cluster
     # @param validators [Hash] hash of validations that describe the validators
     # @param servers [Hash] hash of servers with corresponding server info
     # @param hpc_cluster [Boolean] whether this is an hpc-style cluster
-    def initialize(validators: {}, servers: {}, hpc_cluster: true)
+    def initialize(title:, validators: {}, servers: {}, hpc_cluster: true)
+      # Set title of cluster
+      @title = title
+
       # Generate hash of validations
       @validators = validators.each_with_object({}) do |(k, v), h|
         h[k] = v[:type].constantize.new(v)

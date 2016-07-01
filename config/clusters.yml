@@ -1,5 +1,6 @@
 v1:
   oakley:
+    title: 'Oakley'
     servers:
       login:
         type: 'OodAppkit::Server'
@@ -24,6 +25,7 @@ v1:
           c: 'Oakley nodes'
         version: '3'
   ruby:
+    title: 'Ruby'
     validators:
       in_valid_groups:
         type: 'OodAppkit::Validators::Groups'
@@ -53,6 +55,7 @@ v1:
           c: 'Ruby'
         version: '3'
   quick:
+    title: 'Quick'
     hpc_cluster: false
     servers:
       resource_mgr:
