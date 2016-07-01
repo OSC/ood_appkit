@@ -1,0 +1,71 @@
+v1:
+  oakley:
+    servers:
+      login:
+        type: 'OodAppkit::Server'
+        host: 'oakley.osc.edu'
+      resource_mgr:
+        type: 'OodAppkit::Servers::Torque'
+        host: 'oak-batch.osc.edu'
+        prefix: '/usr/local/torque/5.1.1-1_fba25d92'
+        version: '5.1.1'
+      scheduler:
+        type: 'OodAppkit::Servers::Moab'
+        host: 'ruby-batch.osc.edu'
+        prefix: '/usr/local/moab/8.1.1.2-2015080516-eb28ad0-el6'
+        version: '8.1.1'
+        moabhomedir: '/var/spool/batch/moab'
+      ganglia:
+        type: 'OodAppkit::Servers::Ganglia'
+        host: 'cts05.osc.edu'
+        scheme: 'https'
+        path: '/gweb/graph.php'
+        query_values:
+          c: 'Oakley nodes'
+        version: '3'
+  ruby:
+    validators:
+      in_valid_groups:
+        type: 'OodAppkit::Validators::Groups'
+        groups:
+          - 'ruby'
+    servers:
+      login:
+        type: 'OodAppkit::Server'
+        host: 'ruby.osc.edu'
+      resource_mgr:
+        type: 'OodAppkit::Servers::Torque'
+        host: 'ruby-batch.osc.edu'
+        prefix: '/usr/local/torque/5.1.1-1_fba25d92'
+        version: '5.1.1'
+      scheduler:
+        type: 'OodAppkit::Servers::Moab'
+        host: 'ruby-batch.osc.edu'
+        prefix: '/usr/local/moab/8.1.1.2-2015080516-eb28ad0-el6'
+        version: '8.1.1'
+        moabhomedir: '/var/spool/batch/moab'
+      ganglia:
+        type: 'OodAppkit::Servers::Ganglia'
+        host: 'cts05.osc.edu'
+        scheme: 'https'
+        path: '/gweb/graph.php'
+        query_values:
+          c: 'Ruby'
+        version: '3'
+  quick:
+    hpc_cluster: false
+    servers:
+      resource_mgr:
+        type: 'OodAppkit::Servers::Torque'
+        host: 'quick-batch.osc.edu'
+        prefix: '/usr/local/torque/5.1.1-1_fba25d92'
+        version: '5.1.1'
+        sub_cluster:
+          - 'ruby'
+          - 'oakley'
+      scheduler:
+        type: 'OodAppkit::Servers::Moab'
+        host: 'quick-batch.osc.edu'
+        prefix: '/usr/local/moab/8.1.1.2-2015080516-eb28ad0-el6'
+        version: '8.1.1'
+        moabhomedir: '/var/spool/batch/moab'

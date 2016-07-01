@@ -11,6 +11,10 @@ module OodAppkit
     end
     attr_writer :dataroot
 
+    # Cluster information for local HPC center
+    # @return [OpenStruct] hash of available clusters
+    attr_accessor :clusters
+
     # A markdown renderer used when rendering `*.md` or `*.markdown` views
     # @return [Redcarpet::Markdown] the markdown renderer used
     attr_accessor :markdown
@@ -59,6 +63,16 @@ module OodAppkit
     def set_default_configuration
       ActiveSupport::Deprecation.warn("The environment variable RAILS_DATAROOT will be deprecated in an upcoming release, please use OOD_DATAROOT instead.") if ENV['RAILS_DATAROOT']
       self.dataroot = ENV['OOD_DATAROOT'] || ENV['RAILS_DATAROOT']
+
+      # Initialize list of available clusters
+      self.clusters = OpenStruct.new
+      clusters.all = OodAppkit::Cluster.all( ENV['OOD_CLUSTERS'] ? {file: ENV['OOD_CLUSTERS']} : {} )
+      def clusters.hpc
+        all.select {|k,v| v.hpc_cluster?}
+      end
+      def clusters.lpc
+        all.reject {|k,v| v.hpc_cluster?}
+      end
 
       # Add markdown template support
       self.markdown = Redcarpet::Markdown.new(
