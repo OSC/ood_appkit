@@ -20,11 +20,12 @@ module OodAppkit
 
     # A list of accessible clusters for the currently running user
     # @param file [String] yaml file with cluster configurations
+    # @param force [Boolean] whether we force invalid clusters to be included as well
     # @return [Hash<Cluster>] list of clusters user has access to
-    def self.all(file: File.expand_path('../../../config/clusters.yml', __FILE__))
+    def self.all(file: File.expand_path('../../../config/clusters.yml', __FILE__), force: false)
       parse_config(file).each_with_object({}) do |(k, v), h|
         c = Cluster.new v
-        h[k] = c if c.valid?
+        h[k] = c if c.valid? || force
       end
     end
 
