@@ -404,7 +404,7 @@ In production, a single log will look like:
 ```
 
 
-## Branding Features
+### Branding Features
 
 To take advantage of branding features you must import it in your stylesheet:
 
