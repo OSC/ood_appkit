@@ -20,10 +20,10 @@ module OodAppkit
 
     # URL to access this app for a given host and absolute file path
     # @param host [String] the host the app will make an ssh connection with
-    # @param path [String, #to_s] the absolute path to the directory ssh app opens up in
+    # @param path [#to_s] the absolute path to the directory ssh app opens up in
     # @return [Addressable::URI] the url used to access the app
-    def url(path: '', host: 'default')
-      @template.expand url: @base_url + @ssh_url, path: path.to_s, host: host
+    def url(host:, path: '')
+      @template.expand url: @base_url + @ssh_url, host: host, path: path.to_s
     end
   end
 end
