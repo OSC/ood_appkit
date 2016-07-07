@@ -6,6 +6,10 @@ module OodAppkit
     # YAML configuration version
     VERSION = :v1
 
+    # Unique ID of the cluster
+    # @return [Symbol] id of cluster
+    attr_reader :id
+
     # Title of the cluster
     # @return [String] title of cluster
     attr_reader :title
@@ -24,17 +28,19 @@ module OodAppkit
     # @return [Hash<Cluster>] list of clusters user has access to
     def self.all(file: File.expand_path('../../../config/clusters.yml', __FILE__), force: false)
       parse_config(file).each_with_object({}) do |(k, v), h|
-        c = Cluster.new v
+        c = Cluster.new v.merge(id: k)
         h[k] = c if c.valid? || force
       end
     end
 
+    # @param id [Symbol] id of cluster
     # @param title [String] title of cluster
     # @param validators [Hash] hash of validations that describe the validators
     # @param servers [Hash] hash of servers with corresponding server info
     # @param hpc_cluster [Boolean] whether this is an hpc-style cluster
-    def initialize(title:, validators: {}, servers: {}, hpc_cluster: true)
-      # Set title of cluster
+    def initialize(id:, title:, validators: {}, servers: {}, hpc_cluster: true)
+      # Set id & title of cluster
+      @id = id
       @title = title
 
       # Generate hash of validations
