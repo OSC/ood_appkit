@@ -65,8 +65,9 @@ module OodAppkit
       self.dataroot = ENV['OOD_DATAROOT'] || ENV['RAILS_DATAROOT']
 
       # Initialize list of available clusters
+      c_conf = ENV['OOD_CLUSTERS'] || ( OOD_CONFIG.join('clusters.yml') if OOD_CONFIG.join('clusters.yml').file? )
       self.clusters = OpenStruct.new
-      clusters.all = OodAppkit::Cluster.all( ENV['OOD_CLUSTERS'] ? {file: ENV['OOD_CLUSTERS']} : {} )
+      clusters.all = OodAppkit::Cluster.all( c_conf ? {file: c_conf} : {} )
       def clusters.hpc
         all.select {|k,v| v.hpc_cluster?}
       end

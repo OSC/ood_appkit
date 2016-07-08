@@ -15,6 +15,9 @@ require 'ood_appkit/server'
 
 # The main namespace for OodAppkit. Provides a global configuration.
 module OodAppkit
+  # Global OOD config location
+  OOD_CONFIG = Pathname.new '/etc/ood/config'
+
   extend Configuration
   require 'ood_appkit/engine' if defined?(Rails)
 
