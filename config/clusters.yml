@@ -19,10 +19,14 @@ v1:
       ganglia:
         type: 'OodAppkit::Servers::Ganglia'
         host: 'cts05.osc.edu'
-        scheme: 'https'
-        path: '/gweb/graph.php'
-        query_values:
+        scheme: 'https://'
+        segments:
+          - 'gweb'
+          - 'graph.php'
+        query:
           c: 'Oakley nodes'
+        opt_query:
+          h: '%{h}.ten.osc.edu'
         version: '3'
   ruby:
     title: 'Ruby'
@@ -49,10 +53,14 @@ v1:
       ganglia:
         type: 'OodAppkit::Servers::Ganglia'
         host: 'cts05.osc.edu'
-        scheme: 'https'
-        path: '/gweb/graph.php'
-        query_values:
+        scheme: 'https://'
+        segments:
+          - 'gweb'
+          - 'graph.php'
+        query:
           c: 'Ruby'
+        opt_query:
+          h: '%{h}.ten.osc.edu'
         version: '3'
   quick:
     title: 'Quick'
