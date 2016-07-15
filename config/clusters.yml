@@ -23,7 +23,7 @@ v1:
         segments:
           - 'gweb'
           - 'graph.php'
-        query:
+        req_query:
           c: 'Oakley nodes'
         opt_query:
           h: '%{h}.ten.osc.edu'
@@ -57,7 +57,7 @@ v1:
         segments:
           - 'gweb'
           - 'graph.php'
-        query:
+        req_query:
           c: 'Ruby'
         opt_query:
           h: '%{h}.ten.osc.edu'
