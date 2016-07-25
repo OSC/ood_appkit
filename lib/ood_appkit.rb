@@ -2,11 +2,7 @@ require 'addressable'
 
 require 'ood_appkit/version'
 require 'ood_appkit/configuration'
-require 'ood_appkit/public_url'
-require 'ood_appkit/dashboard_url'
-require 'ood_appkit/shell_url'
-require 'ood_appkit/files_url'
-require 'ood_appkit/editor_url'
+require 'ood_appkit/url'
 require 'ood_appkit/files_rack_app'
 require 'ood_appkit/markdown_template_handler'
 require 'ood_appkit/log_formatter'
@@ -15,11 +11,17 @@ require 'ood_appkit/server'
 
 # The main namespace for OodAppkit. Provides a global configuration.
 module OodAppkit
-  # Global OOD config location
-  OOD_CONFIG = Pathname.new '/etc/ood/config'
-
   extend Configuration
   require 'ood_appkit/engine' if defined?(Rails)
+
+  # A namespace to hold all subclasses of {Url}
+  module Urls
+    require 'ood_appkit/urls/public'
+    require 'ood_appkit/urls/dashboard'
+    require 'ood_appkit/urls/shell'
+    require 'ood_appkit/urls/files'
+    require 'ood_appkit/urls/editor'
+  end
 
   # A namespace to hold all subclasses of {Server}
   module Servers

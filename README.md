@@ -76,7 +76,7 @@ Or by modifying the configuration in an initializer:
 
 OodAppkit.configure do |config|
   # Defaults
-  config.dashboard = OodAppkit::DashboardUrl.new title: 'Dashboard', base_url: '/pun/sys/dashboard'
+  config.dashboard = OodAppkit::Urls::Dashboard.new title: 'Dashboard', base_url: '/pun/sys/dashboard'
 end
 ```
 
@@ -108,7 +108,7 @@ Or by modifying the configuration in an initializer:
 
 OodAppkit.configure do |config|
   # Defaults
-  config.files = OodAppkit::FilesUrl.new title: 'Files', base_url: '/pun/sys/files'
+  config.files = OodAppkit::Urls::Files.new title: 'Files', base_url: '/pun/sys/files'
 end
 ```
 
@@ -137,7 +137,7 @@ Or by modifying the configuration in an initializer:
 
 OodAppkit.configure do |config|
   # Defaults
-  config.editor = OodAppkit::EditorUrl.new title: 'Editor', base_url: '/pun/sys/file-editor'
+  config.editor = OodAppkit::Urls::Editor.new title: 'Editor', base_url: '/pun/sys/file-editor'
 end
 ```
 
@@ -171,7 +171,7 @@ Or by modifying the configuration in an initializer:
 
 OodAppkit.configure do |config|
   # Defaults
-  config.shell = OodAppkit::ShellUrl.new title: 'Shell', base_url: '/pun/sys/shell'
+  config.shell = OodAppkit::Urls::Shell.new title: 'Shell', base_url: '/pun/sys/shell'
 end
 ```
 
@@ -559,7 +559,7 @@ or by modifying the configuration in an initializer
 # config/initializers/ood_appkit.rb
 
 OodAppkit.configure do |config|
-  config.clusters.all = OodAppkit::Cluster.all(file: "/path/to/my/config.yml")
+  config.clusters.cache = OodAppkit::Cluster.all(file: "/path/to/my/config.yml")
 end
 ```
 

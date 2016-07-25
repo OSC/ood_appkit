@@ -65,9 +65,16 @@ module OodAppkit
       self.dataroot = ENV['OOD_DATAROOT'] || ENV['RAILS_DATAROOT']
 
       # Initialize list of available clusters
-      c_conf = ENV['OOD_CLUSTERS'] || ( OOD_CONFIG.join('clusters.yml') if OOD_CONFIG.join('clusters.yml').file? )
-      self.clusters = OpenStruct.new
-      clusters.all = OodAppkit::Cluster.all( c_conf ? {file: c_conf} : {} )
+      # FIXME: use "/etc/ood/config/..." in the future
+      # FIXME: use `ood_cluster` gem instead in the future
+      self.clusters = OpenStruct.new(
+        cache: OodAppkit::Cluster.all(
+          file: ENV['OOD_CLUSTERS'] || File.expand_path('../../../config/clusters.yml', __FILE__)
+        )
+      )
+      def clusters.all
+        cache
+      end
       def clusters.hpc
         all.select {|k,v| v.hpc_cluster?}
       end
@@ -86,23 +93,23 @@ module OodAppkit
       )
 
       # Initialize URL handlers for system apps
-      self.public    = PublicUrl.new(
+      self.public    = Urls::Public.new(
         title:    ENV['OOD_PUBLIC_TITLE'] || 'Public Assets',
         base_url: ENV['OOD_PUBLIC_URL']   || '/public'
       )
-      self.dashboard = DashboardUrl.new(
+      self.dashboard = Urls::Dashboard.new(
         title:    ENV['OOD_DASHBOARD_TITLE'] || 'Dashboard',
         base_url: ENV['OOD_DASHBOARD_URL']   || '/pun/sys/dashboard'
       )
-      self.shell     = ShellUrl.new(
+      self.shell     = Urls::Shell.new(
         title:    ENV['OOD_SHELL_TITLE'] || 'Shell',
         base_url: ENV['OOD_SHELL_URL']   || '/pun/sys/shell'
       )
-      self.files     = FilesUrl.new(
+      self.files     = Urls::Files.new(
         title:    ENV['OOD_FILES_TITLE'] || 'Files',
         base_url: ENV['OOD_FILES_URL']   || '/pun/sys/files'
       )
-      self.editor    = EditorUrl.new(
+      self.editor    = Urls::Editor.new(
         title:    ENV['OOD_EDITOR_TITLE'] || 'Editor',
         base_url: ENV['OOD_EDITOR_URL']   || '/pun/sys/file-editor'
       )
