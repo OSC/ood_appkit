@@ -1,3 +1,4 @@
+require 'ood_cluster'
 require 'ood_reservations'
 
 module OodAppkit
@@ -16,6 +17,7 @@ module OodAppkit
     # @return [String] the cluster url
     attr_reader :url
 
+    # @param cluster [OodCluster::Cluster] cluster object
     # @param id [Object] id used in clusters hash of OodAppkit
     # @param title [#to_s] title of cluster
     # @param url [#to_s] url of cluster
