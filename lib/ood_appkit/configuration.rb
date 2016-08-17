@@ -65,21 +65,19 @@ module OodAppkit
       self.dataroot = ENV['OOD_DATAROOT'] || ENV['RAILS_DATAROOT']
 
       # Initialize list of available clusters
-      # FIXME: use "/etc/ood/config/..." in the future
-      # FIXME: use `ood_cluster` gem instead in the future
       self.clusters = OpenStruct.new(
-        cache: OodAppkit::Cluster.all(
-          file: ENV['OOD_CLUSTERS'] || File.expand_path('../../../config/clusters.yml', __FILE__)
-        )
+        ConfigParser.parse(
+          config: ENV['OOD_CLUSTERS'] || Pathname.new('/etc/ood/config/clusters.d')
+        ).each_with_object({}) { |(k, v), h| h[k] = ClusterDecorator.new(id: k, **v) }
       )
-      def clusters.all
-        cache
+      def clusters.valid
+        OpenStruct.new( self.to_h.select {|k,v| v.valid?} )
       end
-      def clusters.hpc
-        all.select {|k,v| v.hpc_cluster?}
+      def clusters.valid_hpc
+        OpenStruct.new( valid.to_h.select {|k,v| v.hpc_cluster?} )
       end
-      def clusters.lpc
-        all.reject {|k,v| v.hpc_cluster?}
+      def clusters.valid_lpc
+        OpenStruct.new( valid.to_h.reject {|k,v| v.hpc_cluster?} )
       end
 
       # Add markdown template support

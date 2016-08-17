@@ -17,8 +17,9 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib}/**/*", "LICENSE.txt", "Rakefile", "README.md"]
   s.test_files = Dir["test/**/*"]
+  s.required_ruby_version = ">= 2.2.0"
 
-  s.add_dependency "rails", "~> 4.0"
+  s.add_dependency "rails", "~> 4.0", ">= 4.0.7"
   s.add_dependency "ood_support", "~> 0.0"
   s.add_dependency "addressable", "~> 2.4"
   s.add_dependency "redcarpet", "~> 3.2"

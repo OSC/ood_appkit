@@ -448,119 +448,99 @@ breadcrumbs style will resemble the `navbar-brand` style.
 
 ### Cluster Information
 
-A hash of available clusters is accessible from this gem through:
+You can access a given cluster called `my_cluster` through:
 
 ```ruby
-# Hash of all available clusters
-OodAppkit.clusters.all
+# Get object describing my HPC center's `my_cluster`
+OodAppkit.clusters.my_cluster
+#=> #<OodAppkit::ClusterDecorator>
+
+# Try to access a non-existant cluster
+OodAppkit.clusters.invalid_cluster
+#=> nil
+
+# Get a hash of all valid clusters (clusters I have access to) at my HPC center
+OodAppkit.clusters.valid.to_h
 #=> {
-#     cluster1: <OodAppkit::Cluster ...>,
-#     cluster2: <OodAppkit::Cluster ...>,
+#     cluster1: #<OodAppkit::ClusterDecorator>,
+#     cluster2: #<OodAppkit::ClusterDecorator>,
 #     ...
 #   }
 
-# Hash of all available High Performance Computing (hpc) clusters
-OodAppkit.clusters.hpc
-#=> {
-#     cluster1: <OodAppkit::Cluster ...>,
-#     cluster2: <OodAppkit::Cluster ...>,
-#     ...
-#   }
+# Get object describing cluster that I do not have access to
+OodAppkit.clusters.secret_cluster       #=> #<OodAppkit::ClusterDecorator>
+OodAppkit.clusters.valid.secret_cluster #=> nil
 
-# Hash of all available Low Performance Computing (hpc) clusters
+# Get a hash of all valid High Performance Computing (hpc) clusters
+OodAppkit.clusters.valid_hpc.to_h #=> { ... }
+
+# Hash of all available Low Performance Computing (lpc) clusters
 # NB: A low performance computing cluster expects jobs that request a single
 #     core and use minimal resources (e.g., a desktop for file browsing/editing,
 #     a web server that submits jobs to an HPC cluster, visualization software)
-OodAppkit.clusters.lpc
-#=> {
-#     cluster3: <OodAppkit::Cluster ...>,
-#     cluster4: <OodAppkit::Cluster ...>,
-#     ...
-#   }
+OodAppkit.clusters.valid_lpc.to_h #=> { ... }
 ```
 
-Each cluster object will have servers that the developer can communicate with
-or link to:
+Interacting with a cluster object:
 
 ```ruby
 # Choose cluster from available list
-my_cluster = OodAppkit.clusters.hpc[:cluster1]
+my_cluster = OodAppkit.clusters.my_cluster
+
+# Check if cluster is valid (am I allowed to use it?)
+my_cluster.valid? #=> true
+
+# Title of cluster
+my_cluster.title #=> "My Cluster"
+
+# ID of cluster object to find again in OodAppkit.clusters
+my_cluster.id #=> :my_cluster
+
+# URL of cluster
+my_cluster.url #=> "https://hpc.center.edu/clusters/my_cluster"
 
 # Check if it has a login server
 my_cluster.login_server?
 #=> true
 
-# View all available servers
-my_cluster.servers
-#=> {
-#     login: <OodAppkit::Server ...>,
-#     resource_mgr: <OodAppkit::Servers::Torque ...>,
-#     scheduler: <OodAppkit::Servers::Moab ...>,
-#     ...
-#   }
-
-# Choose a particular server
-login_server = my_cluster.login_server
+# Access login server object
+my_cluster.login_server
+#=> #<OodCluster::Servers::Ssh>
 ```
 
 Depending on the type of server chosen, different helper methods will be
-available to the developer. For all servers the `host` will be available:
+available to the developer. You can find more details on this at
+[https://github.com/OSC/ood_cluster](https://github.com/OSC/ood_cluster).
+
+These cluster objects also supply an object to query reservation information
+for the current user:
 
 ```ruby
-# Choose a particular server
-login_server = my_cluster.login_server
+# Check if reservation query object is valid (am I allowed to use it)
+my_cluster.valid?(:rsv_query) #=> true
 
-# Get host for this server
-login_server.host
-#=> "my_cluster.hpc_center.edu"
+# Get reservation query object
+my_rsv_query = my_cluster.rsv_query
+#=> #<OodReservations::Queries::TorqueMoab>
+
+# Try to get reservation query object from cluster that doesn't support
+# reservations
+cluster_with_no_rsvs.rsv_query
+#=> nil
+
+# Get all reservations I have on this cluster
+my_rsv_query.reservations
+#=> [ #<OodReservations::Reservation>, ... ]
 ```
 
-The Torque/Moab servers will also supply information for the clients used to
-communicate with the servers
+You can learn more about the reservation query object by visiting
+[https://github.com/OSC/ood_reservations](https://github.com/OSC/ood_reservations).
 
-```ruby
-# Get the Resource Manager server (known to be Torque at your HPC center)
-torque_server = my_cluster.resource_mgr_server
-
-# Get the path to the client library
-torque_server.lib.to_s
-#=> "/usr/local/torque/x.x.x/lib"
-
-# Get the path to the client binaries
-torque_server.bin.to_s
-#=> "/usr/local/torque/x.x.x/bin"
-```
-
-Web servers will have a URI method to access the server
-
-```ruby
-# Get the Ganglia web server
-ganglia_server = my_cluster.ganglia_server
-
-# Get URI used to access this web server
-ganglia_server.uri.to_s
-#=> "https://www.ganglia.com/gweb/graph.php?c=MyCluster"
-
-# To add query values as options for the server
-ganglia_server.uri(query_values: {g: 'cpu_report'}).to_s
-#=> "https://www.ganglia.com/gweb/graph.php?c=MyCluster&g=cpu_report"
-```
-
-The hash of clusters generated by OodAppkit can be modified by supplying a
+The list of clusters generated by OodAppkit can be modified by supplying a
 different config file through the environment variable `OOD_CLUSTERS`
 
-```
+```sh
 OOD_CLUSTERS="/path/to/my/config.yml"
-```
-
-or by modifying the configuration in an initializer
-
-```ruby
-# config/initializers/ood_appkit.rb
-
-OodAppkit.configure do |config|
-  config.clusters.cache = OodAppkit::Cluster.all(file: "/path/to/my/config.yml")
-end
 ```
 
 ## Develop
