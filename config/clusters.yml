@@ -62,6 +62,30 @@ v1:
         opt_query:
           h: '%{h}.ten.osc.edu'
         version: '3'
+  owens:
+    title: 'Owens'
+    validators:
+      in_valid_groups:
+        type: 'OodAppkit::Validators::Groups'
+        groups:
+          - 'owens'
+          - 'appl'
+    servers:
+      login:
+        type: 'OodAppkit::Server'
+        host: 'owens.hpc.osc.edu'
+      ganglia:
+        type: 'OodAppkit::Servers::Ganglia'
+        host: 'cts05.osc.edu'
+        scheme: 'https://'
+        segments:
+          - 'gweb'
+          - 'graph.php'
+        req_query:
+          c: 'Owens'
+        opt_query:
+          h: '%{h}.ten.osc.edu'
+        version: '3'
   quick:
     title: 'Quick'
     hpc_cluster: false
