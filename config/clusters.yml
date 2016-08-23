@@ -69,7 +69,14 @@ v1:
         type: 'OodAppkit::Validators::Groups'
         groups:
           - 'owens'
+          - 'oscsys'
+          - 'hpcsys'
+          - 'sysp'
           - 'appl'
+          - 'cons'
+          - 'oscgen'
+          - 'hpcsoft'
+          - 'oscadm'
     servers:
       login:
         type: 'OodAppkit::Server'
