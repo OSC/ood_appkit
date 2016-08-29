@@ -6,6 +6,7 @@ require 'ood_appkit/markdown_template_handler'
 require 'ood_appkit/log_formatter'
 require 'ood_appkit/config_parser'
 require 'ood_appkit/cluster_decorator'
+require 'ood_appkit/clusters'
 require 'ood_appkit/validator'
 
 # The main namespace for OodAppkit. Provides a global configuration.

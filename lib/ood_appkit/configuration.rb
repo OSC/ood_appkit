@@ -65,20 +65,11 @@ module OodAppkit
       self.dataroot = ENV['OOD_DATAROOT'] || ENV['RAILS_DATAROOT']
 
       # Initialize list of available clusters
-      self.clusters = OpenStruct.new(
+      self.clusters = Clusters.new(
         ConfigParser.parse(
           config: ENV['OOD_CLUSTERS'] || Pathname.new('/etc/ood/config/clusters.d')
-        ).each_with_object({}) { |(k, v), h| h[k] = ClusterDecorator.new(id: k, **v) }
+        ).map { |k, v| ClusterDecorator.new(id: k.to_sym, **v) }
       )
-      def clusters.valid
-        OpenStruct.new( self.to_h.select {|k,v| v.valid?} )
-      end
-      def clusters.valid_hpc
-        OpenStruct.new( valid.to_h.select {|k,v| v.hpc_cluster?} )
-      end
-      def clusters.valid_lpc
-        OpenStruct.new( valid.to_h.reject {|k,v| v.hpc_cluster?} )
-      end
 
       # Add markdown template support
       self.markdown = Redcarpet::Markdown.new(

@@ -6,7 +6,7 @@ module OodAppkit
   class ClusterDecorator < SimpleDelegator
     # The identifier used as the key in the OodAppkit clusters hash (used for
     # reverse searching)
-    # @return [Object] the clusters hash key for this object
+    # @return [Symbol] the clusters hash key for this object
     attr_reader :id
 
     # The title used to describe this cluster to users
@@ -18,13 +18,13 @@ module OodAppkit
     attr_reader :url
 
     # @param cluster [OodCluster::Cluster] cluster object
-    # @param id [Object] id used in clusters hash of OodAppkit
+    # @param id [#to_sym] id used in clusters hash of OodAppkit
     # @param title [#to_s] title of cluster
     # @param url [#to_s] url of cluster
     # @param validators [Hash{#to_sym=>Array<Validator>}] hash of validators
     def initialize(cluster:, id:, title: "", url: "", validators: {}, **_)
       super(cluster)
-      @id         = id
+      @id         = id.to_sym
       @title      = title.to_s
       @url        = url.to_s
       @validators = validators.each_with_object({}) { |(k, v), h| h[k.to_sym] = v }
@@ -41,6 +41,13 @@ module OodAppkit
     # @return [OodReservations::Query,nil] reservation query object
     def rsv_query
       OodReservations::Query.build(cluster: self)
+    end
+
+    # The comparison operator
+    # @param other [#to_sym] object to compare against
+    # @return [Boolean] whether objects are equivalent
+    def ==(other)
+      id == other.to_sym
     end
   end
 end
