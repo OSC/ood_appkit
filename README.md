@@ -578,6 +578,13 @@ different config file through the environment variable `OOD_CLUSTERS`
 OOD_CLUSTERS="/path/to/my/config.yml"
 ```
 
+Or a directory with aptly named configuration files (name of file is id of
+cluster):
+
+```sh
+OOD_CLUSTERS="/path/to/configs.d"
+```
+
 ## Develop
 
 Generated using:
