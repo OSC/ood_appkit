@@ -448,119 +448,141 @@ breadcrumbs style will resemble the `navbar-brand` style.
 
 ### Cluster Information
 
-A hash of available clusters is accessible from this gem through:
+Access to a list of clusters defined by the system administrator on a given
+host is done through:
 
 ```ruby
-# Hash of all available clusters
-OodAppkit.clusters.all
-#=> {
-#     cluster1: <OodAppkit::Cluster ...>,
-#     cluster2: <OodAppkit::Cluster ...>,
-#     ...
-#   }
+# An enumerable list of clusters
+OodAppkit.clusters
+#=> #<OodAppkit::Clusters>
 
-# Hash of all available High Performance Computing (hpc) clusters
-OodAppkit.clusters.hpc
-#=> {
-#     cluster1: <OodAppkit::Cluster ...>,
-#     cluster2: <OodAppkit::Cluster ...>,
-#     ...
-#   }
+# Create list of cluster titles
+OodAppkit.clusters.map(&:title)
+#=> ["My Cluster", "Tiny Cluster", "Big Cluster"]
 
-# Hash of all available Low Performance Computing (hpc) clusters
+# Count number of clusters available
+OodAppkit.clusters.count
+#=> 3
+
+# Check if cluster called "tiny_cluster" exists
+OodAppkit.clusters.include? :tiny_cluster
+#=> true
+```
+
+You can access a given cluster with id `my_cluster` by:
+
+```ruby
+# Get object describing my HPC center's `my_cluster`
+OodAppkit.clusters[:my_cluster]
+#=> #<OodAppkit::ClusterDecorator>
+
+# or...
+OodAppkit.clusters["my_cluster"]
+#=> #<OodAppkit::ClusterDecorator>
+
+# Trying to access a non-existant cluster
+OodAppkit.clusters[:invalid_cluster]
+#=> nil
+```
+
+A cluster object comes with some pre-defined helper methods to help you find
+the cluster that meets your needs:
+
+```ruby
+# Get the cluster of our choosing
+my_cluster = OodAppkit.clusters[:my_cluster]
+
+# Is this cluster valid (can I the user access the servers provided by it?)
+my_cluster.valid?
+#=> true
+
+# Is this cluster considered a High Performance Computing (hpc) cluster?
 # NB: A low performance computing cluster expects jobs that request a single
 #     core and use minimal resources (e.g., a desktop for file browsing/editing,
 #     a web server that submits jobs to an HPC cluster, visualization software)
-OodAppkit.clusters.lpc
-#=> {
-#     cluster3: <OodAppkit::Cluster ...>,
-#     cluster4: <OodAppkit::Cluster ...>,
-#     ...
-#   }
-```
+my_cluster.hpc_cluster?
+#=> false
 
-Each cluster object will have servers that the developer can communicate with
-or link to:
+# ID of cluster object to find again in OodAppkit.clusters
+my_cluster.id #=> :my_cluster
 
-```ruby
-# Choose cluster from available list
-my_cluster = OodAppkit.clusters.hpc[:cluster1]
+# URL of cluster
+my_cluster.url #=> "https://hpc.center.edu/clusters/my_cluster"
 
 # Check if it has a login server
-my_cluster.login_server?
-#=> true
+my_cluster.login_server? #=> true
 
-# View all available servers
-my_cluster.servers
-#=> {
-#     login: <OodAppkit::Server ...>,
-#     resource_mgr: <OodAppkit::Servers::Torque ...>,
-#     scheduler: <OodAppkit::Servers::Moab ...>,
-#     ...
-#   }
+# Access login server object
+my_cluster.login_server
+#=> #<OodCluster::Servers::Ssh>
+```
 
-# Choose a particular server
-login_server = my_cluster.login_server
+As this object is an `Enumerable` you can create subsets of clusters that your
+app only cares for in an initializer:
+
+```ruby
+# I only want clusters that are valid for the currently running user
+valid_clusters = OodAppkit::Clusters.new(
+  OodAppkit.clusters.select(&:valid?)
+)
+#=> #<OodAppkit::Clusters>
+
+# Create list of cluster titles from these valid clusters
+valid_clusters.map(&:title)
+#=> ["My Cluster"]
+
+# I only want HPC clusters that I can submit solver jobs to
+hpc_clusters = OodAppkit::Clusters.new(
+  OodAppkit.clusters.select(&:hpc_cluster?)
+)
 ```
 
 Depending on the type of server chosen, different helper methods will be
-available to the developer. For all servers the `host` will be available:
+available to the developer. You can find more details on this at
+https://github.com/OSC/ood_cluster.
+
+#### Reservations
+
+If reservations are supported for the chosen cluster, then a cluster object can
+be used to query reservation information for the current user:
 
 ```ruby
-# Choose a particular server
-login_server = my_cluster.login_server
+# Check if reservation query object is valid (am I allowed to use it)
+# NB: Definitely use this as some users may be privileged and have access to
+#     view ALL reservations. This can cause the app to hang.
+my_cluster.valid?(:rsv_query) #=> true
 
-# Get host for this server
-login_server.host
-#=> "my_cluster.hpc_center.edu"
+# Get reservation query object
+my_rsv_query = my_cluster.rsv_query
+#=> #<OodReservations::Queries::TorqueMoab>
+
+# Try to get reservation query object from cluster that doesn't support
+# reservations
+cluster_with_no_rsvs.rsv_query
+#=> nil
+
+# Get all reservations I have on this cluster
+my_rsv_query.reservations
+#=> [ #<OodReservations::Reservation>, ... ]
 ```
 
-The Torque/Moab servers will also supply information for the clients used to
-communicate with the servers
+You can learn more about the reservation query object by visiting
+https://github.com/OSC/ood_reservations.
 
-```ruby
-# Get the Resource Manager server (known to be Torque at your HPC center)
-torque_server = my_cluster.resource_mgr_server
+#### Configuration
 
-# Get the path to the client library
-torque_server.lib.to_s
-#=> "/usr/local/torque/x.x.x/lib"
-
-# Get the path to the client binaries
-torque_server.bin.to_s
-#=> "/usr/local/torque/x.x.x/bin"
-```
-
-Web servers will have a URI method to access the server
-
-```ruby
-# Get the Ganglia web server
-ganglia_server = my_cluster.ganglia_server
-
-# Get URI used to access this web server
-ganglia_server.uri.to_s
-#=> "https://www.ganglia.com/gweb/graph.php?c=MyCluster"
-
-# To add query values as options for the server
-ganglia_server.uri(query_values: {g: 'cpu_report'}).to_s
-#=> "https://www.ganglia.com/gweb/graph.php?c=MyCluster&g=cpu_report"
-```
-
-The hash of clusters generated by OodAppkit can be modified by supplying a
+The list of clusters generated by OodAppkit can be modified by supplying a
 different config file through the environment variable `OOD_CLUSTERS`
 
-```
+```sh
 OOD_CLUSTERS="/path/to/my/config.yml"
 ```
 
-or by modifying the configuration in an initializer
+Or a directory with aptly named configuration files (name of file is id of
+cluster):
 
-```ruby
-# config/initializers/ood_appkit.rb
-
-OodAppkit.configure do |config|
-  config.clusters.cache = OodAppkit::Cluster.all(file: "/path/to/my/config.yml")
-end
+```sh
+OOD_CLUSTERS="/path/to/configs.d"
 ```
 
 ## Develop
