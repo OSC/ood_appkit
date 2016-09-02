@@ -1,5 +1,4 @@
 require 'ood_cluster'
-require 'ood_reservations'
 
 module OodAppkit
   # A decorator that adds a presentation layer to the {OodCluster::Cluster} object
