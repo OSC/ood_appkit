@@ -37,12 +37,6 @@ module OodAppkit
       @validators.fetch(method.to_sym, []).all? { |v| v.success? }
     end
 
-    # A reservation query object used to query reservations for current user
-    # @return [OodReservations::Query,nil] reservation query object
-    def rsv_query
-      OodReservations::Query.build(cluster: self)
-    end
-
     # The comparison operator
     # @param other [#to_sym] object to compare against
     # @return [Boolean] whether objects are equivalent

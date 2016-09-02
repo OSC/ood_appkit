@@ -22,7 +22,6 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 4.0", ">= 4.0.7"
   s.add_dependency "ood_support", "~> 0.0"
   s.add_dependency "ood_cluster", "~> 0.0"
-  s.add_dependency "ood_reservations", "~> 0.0"
   s.add_dependency "addressable", "~> 2.4"
   s.add_dependency "redcarpet", "~> 3.2"
   s.add_dependency "lograge", "~>0.3"

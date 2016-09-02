@@ -541,10 +541,32 @@ Depending on the type of server chosen, different helper methods will be
 available to the developer. You can find more details on this at
 https://github.com/OSC/ood_cluster.
 
-#### Reservations
+#### Validations
 
-If reservations are supported for the chosen cluster, then a cluster object can
-be used to query reservation information for the current user:
+A cluster may support more validations than whether the current user can access
+it. The extra validations are defined in the configuration YAML file as such:
+
+```yaml
+validators:
+  cluster:
+    - type: "OodAppkit::Validators::Groups"
+      data:
+        groups:
+          - "ruby"
+        allow: true
+  rsv_query:
+    - type: "OodAppkit::Validators::Groups"
+      data:
+        groups:
+          - "sysp"
+          - "hpcsoft"
+        allow: false
+```
+
+where the key is used in the `OodAppkit::ClusterDecorator#valid?` method.
+
+One such validation is whether the current user can query their reservation
+information for the given cluster:
 
 ```ruby
 # Check if reservation query object is valid (am I allowed to use it)
@@ -552,17 +574,9 @@ be used to query reservation information for the current user:
 #     view ALL reservations. This can cause the app to hang.
 my_cluster.valid?(:rsv_query) #=> true
 
-# Get reservation query object
-my_rsv_query = my_cluster.rsv_query
-#=> #<OodReservations::Queries::TorqueMoab>
-
-# Try to get reservation query object from cluster that doesn't support
-# reservations
-cluster_with_no_rsvs.rsv_query
-#=> nil
-
-# Get all reservations I have on this cluster
-my_rsv_query.reservations
+# I am allowed to use it so let's query for user's reservations
+require 'ood_reservations'
+my_rsv_query = OodReservations::Query.build(cluster: my_cluster).reservations
 #=> [ #<OodReservations::Reservation>, ... ]
 ```
 
