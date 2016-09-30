@@ -1,6 +1,6 @@
 # OOD App Kit
 
-The `ood_appkit` gem is a paackage of utility functions and engines for applications running on the Open OnDemand platform.
+The `ood_appkit` gem is a package of utility functions and engines for applications running on the Open OnDemand platform.
 
 Functionality includes:
 * [Rake tasks](https://github.com/OSC/ood_appkit#rake-tasks)
