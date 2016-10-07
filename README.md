@@ -614,6 +614,8 @@ cluster):
 OOD_CLUSTERS="/path/to/configs.d"
 ```
 
+The default location is: `/etc/ood/config/clusters.d`
+
 ## Develop
 
 Generated using:
