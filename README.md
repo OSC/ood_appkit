@@ -344,10 +344,14 @@ for these to take effect
 @import "bootstrap";
 ```
 
-**If you change any environment variables you must `clobber` your assets in both Production and Development mode.**
+**Note:** After changing an environment variable or configuration option in the initalizer you must **clobber** your assets and **restart** the app:
 
-```
-$ bin/rake assets:clobber
+```bash
+# clobber assets
+bin/rake assets:clobber
+
+# restart app
+touch tmp/restart.txt
 ```
 
 ### Markdown Handler
@@ -380,6 +384,16 @@ rendered markdown to resemble GitHub's display of markdown.
 ```scss
 // app/assets/stylesheets/application.scss
 
+// load the bootstrap sprockets first
+@import "bootstrap-sprockets";
+
+// this MUST occur before you import bootstrap
+@import "ood_appkit/bootstrap-overrides";
+
+// this MUST occur after the bootstrap overrides
+@import "bootstrap";
+
+// this MUST occur after the bootstrap import
 @import "ood_appkit/markdown";
 ```
 
@@ -389,6 +403,17 @@ It is also included if you import the default stylesheet:
 ```scss
 // app/assets/stylesheets/application.scss
 
+// load the bootstrap sprockets first
+@import "bootstrap-sprockets";
+
+// this MUST occur before you import bootstrap
+@import "ood_appkit/bootstrap-overrides";
+
+// this MUST occur after the bootstrap overrides
+@import "bootstrap";
+
+
+// this MUST occur after the bootstrap import
 @import "ood_appkit";
 ```
 
@@ -432,6 +457,9 @@ To take advantage of branding features you must import it in your stylesheet:
 ```scss
 // app/assets/stylesheets/application.scss
 
+// load the bootstrap sprockets first
+@import "bootstrap-sprockets";
+
 // this MUST occur before you import bootstrap
 @import "ood_appkit/bootstrap-overrides";
 
@@ -447,6 +475,9 @@ It is also included if you import the default stylesheet:
 
 ```scss
 // app/assets/stylesheets/application.scss
+
+// load the bootstrap sprockets first
+@import "bootstrap-sprockets";
 
 // this MUST occur before you import bootstrap
 @import "ood_appkit/bootstrap-overrides";
