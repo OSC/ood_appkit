@@ -65,10 +65,14 @@ module OodAppkit
       self.dataroot = ENV['OOD_DATAROOT'] || ENV['RAILS_DATAROOT']
 
       # Initialize list of available clusters
+      c_config = Pathname.new(ENV['OOD_CLUSTERS'] || '/etc/ood/config/clusters.d')
       self.clusters = Clusters.new(
-        ConfigParser.parse(
-          config: ENV['OOD_CLUSTERS'] || Pathname.new('/etc/ood/config/clusters.d')
-        ).map { |k, v| ClusterDecorator.new(id: k.to_sym, **v) }
+        begin
+          ConfigParser.parse(config: c_config).map { |k, v| ClusterDecorator.new(id: k.to_sym, **v) }
+        rescue ConfigParser::InvalidConfigPath
+          STDERR.puts "Invalid cluster config specified: #{c_config}"
+          []
+        end
       )
 
       # Add markdown template support
