@@ -412,7 +412,6 @@ It is also included if you import the default stylesheet:
 // this MUST occur after the bootstrap overrides
 @import "bootstrap";
 
-
 // this MUST occur after the bootstrap import
 @import "ood_appkit";
 ```
