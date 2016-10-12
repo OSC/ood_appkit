@@ -1,27 +1,32 @@
 # OOD App Kit
 
-The `ood_appkit` gem is a package of utility functions and engines for applications running on the Open OnDemand platform.
+The `ood_appkit` gem is a package of utility functions and engines for
+applications running on the Open OnDemand platform.
 
 Functionality includes:
-* [Rake tasks](https://github.com/OSC/ood_appkit#rake-tasks)
-* [URL handlers for OOD System applciations](https://github.com/OSC/ood_appkit#url-handlers-for-system-apps)
-* [Rack middleware for handling files under a configured dataroot](https://github.com/OSC/ood_appkit#rack-middleware-for-handling-files-under-dataroot)
-* [A wiki static page engine](https://github.com/OSC/ood_appkit#wiki-static-page-engine)
-* [Override Bootstrap Variables](https://github.com/OSC/ood_appkit#override-bootstrap-variables)
-* [A markdown handler](https://github.com/OSC/ood_appkit#markdown-handler)
-* [Custom Log Formatting](https://github.com/OSC/ood_appkit#custom-log-formatting)
-* [Branding Features](https://github.com/OSC/ood_appkit#branding-features)
-* [Information on Configured Clusters](https://github.com/OSC/ood_appkit#cluster-information)
+* [Rake tasks](#rake-tasks)
+* [URL handlers for OOD System applciations](#url-handlers-for-system-apps)
+* [Rack middleware for handling files under a configured dataroot](#rack-middleware-for-handling-files-under-dataroot)
+* [A wiki static page engine](#wiki-static-page-engine)
+* [Override Bootstrap Variables](#override-bootstrap-variables)
+* [A markdown handler](#markdown-handler)
+* [Custom Log Formatting](#custom-log-formatting)
+* [Branding Features](#branding-features)
+* [Information on Configured Clusters](#cluster-information)
 
 ## Installation
 
 To use, add this line to your application's Gemfile:
 
-    gem 'ood_appkit'
+```bash
+gem 'ood_appkit'
+```
 
 And then execute:
 
-    bundle install
+```bash
+bundle install
+```
 
 ## Usage
 
@@ -344,7 +349,8 @@ for these to take effect
 @import "bootstrap";
 ```
 
-**Note:** After changing an environment variable or configuration option in the initalizer you must **clobber** your assets and **restart** the app:
+**Note:** After changing an environment variable or configuration option in the
+initalizer you must **clobber** your assets and **restart** the app:
 
 ```bash
 # clobber assets
