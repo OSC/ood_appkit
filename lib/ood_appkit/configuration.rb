@@ -91,7 +91,7 @@ module OodAppkit
         base_url: ENV['OOD_PUBLIC_URL']   || '/public'
       )
       self.dashboard = Urls::Dashboard.new(
-        title:    ENV['OOD_DASHBOARD_TITLE'] || 'Dashboard',
+        title:    ENV['OOD_DASHBOARD_TITLE'] || 'Open OnDemand',
         base_url: ENV['OOD_DASHBOARD_URL']   || '/pun/sys/dashboard'
       )
       self.shell     = Urls::Shell.new(
