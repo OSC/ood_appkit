@@ -86,7 +86,7 @@ You can change the options using environment variables:
 
 ```bash
 OOD_DASHBOARD_URL='/pun/sys/dashboard'
-OOD_DASHBOARD_TITLE='Dashboard'
+OOD_DASHBOARD_TITLE='Open OnDemand'
 ```
 
 Or by modifying the configuration in an initializer:
@@ -96,7 +96,7 @@ Or by modifying the configuration in an initializer:
 
 OodAppkit.configure do |config|
   # Defaults
-  config.dashboard = OodAppkit::Urls::Dashboard.new title: 'Dashboard', base_url: '/pun/sys/dashboard'
+  config.dashboard = OodAppkit::Urls::Dashboard.new title: 'Open OnDemand', base_url: '/pun/sys/dashboard'
 end
 ```
 
