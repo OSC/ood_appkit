@@ -26,7 +26,10 @@ module OodAppkit
         parse_file config
       elsif config.directory?
         config.children.each_with_object({}) do |f, h|
-          /^(.+)\.yml$/.match(f.basename.to_s) { h[$1.to_sym] = parse_file(f) }
+          /^(.+)\.yml$/.match(f.basename.to_s) do
+            hsh = parse_file(f)
+            h[$1.to_sym] = hsh unless hsh.empty?
+          end
         end
       else
         raise InvalidConfigPath, "invalid config path: #{config}"
