@@ -36,7 +36,7 @@ module OodAppkit
     private
       # Parse a single yaml file
       def self.parse_file(file)
-        JSON.load(JSON.dump(YAML.load(File.read(file.to_s))[YAML_VERSION])).deep_symbolize_keys
+        JSON.load(JSON.dump(YAML.load(File.read(file.to_s)).fetch(YAML_VERSION, {}))).deep_symbolize_keys
       end
   end
 end
