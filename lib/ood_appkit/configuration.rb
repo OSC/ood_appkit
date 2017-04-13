@@ -7,7 +7,7 @@ module OodAppkit
     # Location where app data is stored on local filesystem
     # @return [Pathname, nil] path to app data
     def dataroot
-      Pathname.new(@dataroot) if @dataroot
+      Pathname.new(@dataroot).expand_path if @dataroot
     end
     attr_writer :dataroot
 
@@ -63,6 +63,7 @@ module OodAppkit
     def set_default_configuration
       ActiveSupport::Deprecation.warn("The environment variable RAILS_DATAROOT will be deprecated in an upcoming release, please use OOD_DATAROOT instead.") if ENV['RAILS_DATAROOT']
       self.dataroot = ENV['OOD_DATAROOT'] || ENV['RAILS_DATAROOT']
+      self.dataroot ||= "~/#{ENV['OOD_PORTAL'] || "ondemand"}/data/#{ENV['APP_TOKEN']}" if ENV['APP_TOKEN']
 
       # Initialize list of available clusters
       c_config = Pathname.new(ENV['OOD_CLUSTERS'] || '/etc/ood/config/clusters.d')
