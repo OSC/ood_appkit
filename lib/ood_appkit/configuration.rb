@@ -1,5 +1,6 @@
 require 'redcarpet'
 require 'ostruct'
+require 'ood_core'
 
 module OodAppkit
   # An object that stores and adds configuration options.
@@ -12,8 +13,12 @@ module OodAppkit
     attr_writer :dataroot
 
     # Cluster information for local HPC center
-    # @return [OpenStruct] hash of available clusters
-    attr_accessor :clusters
+    # @return [OodCore::Clusters] hash of available clusters
+    def clusters
+      @clusters ||= parse_clusters(ENV['OOD_CLUSTERS'])
+    end
+
+    attr_writer :clusters
 
     # A markdown renderer used when rendering `*.md` or `*.markdown` views
     # @return [Redcarpet::Markdown] the markdown renderer used
@@ -64,17 +69,6 @@ module OodAppkit
       ActiveSupport::Deprecation.warn("The environment variable RAILS_DATAROOT will be deprecated in an upcoming release, please use OOD_DATAROOT instead.") if ENV['RAILS_DATAROOT']
       self.dataroot = ENV['OOD_DATAROOT'] || ENV['RAILS_DATAROOT']
       self.dataroot ||= "~/#{ENV['OOD_PORTAL'] || "ondemand"}/data/#{ENV['APP_TOKEN']}" if ENV['APP_TOKEN']
-
-      # Initialize list of available clusters
-      c_config = Pathname.new(ENV['OOD_CLUSTERS'] || '/etc/ood/config/clusters.d')
-      self.clusters = Clusters.new(
-        begin
-          ConfigParser.parse(config: c_config).map { |k, v| ClusterDecorator.new(id: k.to_sym, **v) }
-        rescue ConfigParser::InvalidConfigPath
-          STDERR.puts "Invalid cluster config specified: #{c_config}"
-          []
-        end
-      )
 
       # Add markdown template support
       self.markdown = Redcarpet::Markdown.new(
@@ -127,5 +121,13 @@ module OodAppkit
 
       self.enable_log_formatter = ::Rails.env.production?
     end
+
+    private
+      # Read in cluster config and parse it
+      def parse_clusters(config)
+        OodCore::Clusters.load_file(config || '/etc/ood/config/clusters.d')
+      rescue OodCore::ConfigurationNotFound
+        OodCore::Clusters.new([])
+      end
   end
 end
