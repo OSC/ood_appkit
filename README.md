@@ -525,11 +525,7 @@ host is done through:
 ```ruby
 # An enumerable list of clusters
 OodAppkit.clusters
-#=> #<OodAppkit::Clusters>
-
-# Create list of cluster titles
-OodAppkit.clusters.map(&:title)
-#=> ["My Cluster", "Tiny Cluster", "Big Cluster"]
+#=> #<OodCore::Clusters>
 
 # Count number of clusters available
 OodAppkit.clusters.count
@@ -545,114 +541,18 @@ You can access a given cluster with id `my_cluster` by:
 ```ruby
 # Get object describing my HPC center's `my_cluster`
 OodAppkit.clusters[:my_cluster]
-#=> #<OodAppkit::ClusterDecorator>
+#=> #<OodCore::Cluster>
 
 # or...
 OodAppkit.clusters["my_cluster"]
-#=> #<OodAppkit::ClusterDecorator>
+#=> #<OodCore::Cluster>
 
 # Trying to access a non-existant cluster
 OodAppkit.clusters[:invalid_cluster]
 #=> nil
 ```
 
-A cluster object comes with some pre-defined helper methods to help you find
-the cluster that meets your needs:
-
-```ruby
-# Get the cluster of our choosing
-my_cluster = OodAppkit.clusters[:my_cluster]
-
-# Is this cluster valid (can I the user access the servers provided by it?)
-my_cluster.valid?
-#=> true
-
-# Is this cluster considered a High Performance Computing (hpc) cluster?
-# NB: A low performance computing cluster expects jobs that request a single
-#     core and use minimal resources (e.g., a desktop for file browsing/editing,
-#     a web server that submits jobs to an HPC cluster, visualization software)
-my_cluster.hpc_cluster?
-#=> false
-
-# ID of cluster object to find again in OodAppkit.clusters
-my_cluster.id #=> :my_cluster
-
-# URL of cluster
-my_cluster.url #=> "https://hpc.center.edu/clusters/my_cluster"
-
-# Check if it has a login server
-my_cluster.login_server? #=> true
-
-# Access login server object
-my_cluster.login_server
-#=> #<OodCluster::Servers::Ssh>
-```
-
-As this object is an `Enumerable` you can create subsets of clusters that your
-app only cares for in an initializer:
-
-```ruby
-# I only want clusters that are valid for the currently running user
-valid_clusters = OodAppkit::Clusters.new(
-  OodAppkit.clusters.select(&:valid?)
-)
-#=> #<OodAppkit::Clusters>
-
-# Create list of cluster titles from these valid clusters
-valid_clusters.map(&:title)
-#=> ["My Cluster"]
-
-# I only want HPC clusters that I can submit solver jobs to
-hpc_clusters = OodAppkit::Clusters.new(
-  OodAppkit.clusters.select(&:hpc_cluster?)
-)
-```
-
-Depending on the type of server chosen, different helper methods will be
-available to the developer. You can find more details on this at
-https://github.com/OSC/ood_cluster.
-
-#### Validations
-
-A cluster may support more validations than whether the current user can access
-it. The extra validations are defined in the configuration YAML file as such:
-
-```yaml
-validators:
-  cluster:
-    - type: "OodAppkit::Validators::Groups"
-      data:
-        groups:
-          - "ruby"
-        allow: true
-  rsv_query:
-    - type: "OodAppkit::Validators::Groups"
-      data:
-        groups:
-          - "sysp"
-          - "hpcsoft"
-        allow: false
-```
-
-where the key is used in the `OodAppkit::ClusterDecorator#valid?` method.
-
-One such validation is whether the current user can query their reservation
-information for the given cluster:
-
-```ruby
-# Check if reservation query object is valid (am I allowed to use it)
-# NB: Definitely use this as some users may be privileged and have access to
-#     view ALL reservations. This can cause the app to hang.
-my_cluster.valid?(:rsv_query) #=> true
-
-# I am allowed to use it so let's query for user's reservations
-require 'ood_reservations'
-my_rsv_query = OodReservations::Query.build(cluster: my_cluster).reservations
-#=> [ #<OodReservations::Reservation>, ... ]
-```
-
-You can learn more about the reservation query object by visiting
-https://github.com/OSC/ood_reservations.
+You can read more about this cluster object at https://github.com/OSC/ood_core.
 
 #### Configuration
 
@@ -663,7 +563,7 @@ different config file through the environment variable `OOD_CLUSTERS`
 OOD_CLUSTERS="/path/to/my/config.yml"
 ```
 
-Or a directory with aptly named configuration files (name of file is id of
+Or a directory with cluster named configuration files (name of file is id of
 cluster):
 
 ```sh
