@@ -10,10 +10,16 @@ module OodAppkit
       end
 
       # URL to access this app's file editor API for a given absolute file path
-      # @param path [#to_s] the absolute path to the file on the filesystem
-      # @return [Addressable::URI] absolute url to access path in file editor api
-      def edit(path: '')
-        @template.expand url: @base_url + @edit_url, path: path.to_s
+      # @param opts [#to_h] the available options for this method
+      # @option opts [#to_s, nil] :path ("") The absolute path to the file on
+      #   the filesystem
+      # @return [Addressable::URI] absolute url to access path in file editor
+      #   api
+      def edit(opts = {})
+        opts = opts.to_h.compact.symbolize_keys
+
+        path = opts.fetch(:path, "").to_s
+        @template.expand url: @base_url + @edit_url, path: path
       end
     end
   end
