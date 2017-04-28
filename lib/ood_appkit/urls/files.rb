@@ -12,17 +12,27 @@ module OodAppkit
       end
 
       # URL to access this app for a given absolute file path
-      # @param path [#to_s] the absolute path to the file on the filesystem
-      # @return [Addressable::URI] absolute url to access path in files app
-      def url(path: '')
-        @template.expand url: @base_url + @fs_url, path: path.to_s
+      # @param opts [#to_h] the available options for this method
+      # @option opts [#to_s, nil] :path ("") The absolute path to the file on
+      #   the filesystem
+      # @return [Addressable::URI] absolute url to access path in file app
+      def url(opts = {})
+        opts = opts.to_h.compact.symbolize_keys
+
+        path = opts.fetch(:path, "").to_s
+        @template.expand url: @base_url + @fs_url, path: path
       end
 
       # URL to access this app's API for a given absolute file path
-      # @param path [#to_s] the absolute path to the file on the filesystem
+      # @param opts [#to_h] the available options for this method
+      # @option opts [#to_s, nil] :path ("") The absolute path to the file on
+      #   the filesystem
       # @return [Addressable::URI] absolute url to access path in files app api
-      def api(path: '')
-        @template.expand url: @base_url + @api_url, path: path.to_s
+      def api(opts = {})
+        opts = opts.to_h.compact.symbolize_keys
+
+        path = opts.fetch(:path, "").to_s
+        @template.expand url: @base_url + @api_url, path: path
       end
     end
   end
