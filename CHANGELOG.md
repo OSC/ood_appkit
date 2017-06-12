@@ -1,5 +1,7 @@
 ## Unreleased
 
+## 1.0.2 (2017-06-12)
+
 Bugfixes:
 
   - Security fix: Cookies are kept within the Passenger app's base URI now.
