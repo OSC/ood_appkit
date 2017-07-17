@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.3] - 2017-07-17
+
 ### Changed
 
 - Changed the `CHANGELOG.md` formatting.
@@ -16,7 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Loosened up version requirements on `ood_core` to better follow semantic
   versioning.
 
-## 1.0.2 (2017-06-12)
+## 1.0.2 - 2017-06-12
 
 ### Fixed
 
@@ -28,4 +30,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Security fix: Cookies are kept within the Passenger app's base URI now.
   [#42](https://github.com/OSC/ood_appkit/pull/42)
 
-[Unreleased]: https://github.com/OSC/ood_appkit/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/OSC/ood_appkit/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/OSC/ood_appkit/compare/v1.0.2...v1.0.3
