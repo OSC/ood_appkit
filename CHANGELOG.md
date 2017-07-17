@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Changed the `CHANGELOG.md` formatting.
 
+### Fixed
+
+- Loosened up version requirements on `ood_core` to better follow semantic
+  versioning.
+
 ## 1.0.2 (2017-06-12)
 
 ### Fixed
