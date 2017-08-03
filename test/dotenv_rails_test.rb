@@ -20,16 +20,20 @@ class OodAppkitTest < ActiveSupport::TestCase
     end
   end
 
-  # test "etc env and shared env parend directory defaults are good" do
-  #   Dir.mktmpdir do |dir|
-  #     d = Pathname.new(dir).join("dashboard")
-  #     d.mkdir
-  #     denv = OodAppkit::DotenvRails.new(root_dir: d)
+  test "etc env and shared env parent directory have correct defaults" do
+    Dir.mktmpdir do |dir|
+      d = Pathname.new(dir).join("dashboard")
+      d.mkdir
 
-  #     assert_equal '/etc/ood/config/apps/dashboard', denv.etc_dir.to_s
-  #     assert_equal '/etc/ood/config/shared', denv.shared_dir.to_s
-  #   end
-  # end
+      denv = OodAppkit::DotenvRails.new(root_dir: d)
+      assert_equal '/etc/ood/config/apps/dashboard', denv.etc_dir.to_s
+      assert_equal '/etc/ood/config/shared', denv.shared_dir.to_s
+    end
+  end
+
+  # test: set ability to change locations of etc/app/env and etc/shared/env in dotenv.config
+  # test: set env in app/env and etc/app/env => etc/app/env is used (verify etc/app/env overrides everything that is not .local)
+  # test: set env in app/env.local and etc/app/env and etc/shared/env => app/env.local is used (verify .env.local overrides all)
 
   # test "etc env and shared env modify env" do
   #   Dir.mktmpdir do |dir|
@@ -58,9 +62,4 @@ class OodAppkitTest < ActiveSupport::TestCase
   #   end
   # end
 
-  # test: set env in app/env and etc/app/env => etc/app/env is used (verify etc/app/env overrides everything that is not .local)
-  # test: set env in app/env.local and etc/app/env and etc/shared/env => app/env.local is used (verify .env.local overrides all)
-  # test: set 
-  #
-  # dotenv.config
 end
