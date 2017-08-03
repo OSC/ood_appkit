@@ -21,14 +21,14 @@ class OodAppkitTest < ActiveSupport::TestCase
 
       Bundler.with_clean_env do
         OodAppkit::DotenvRails.new(root_dir: d, include_local_files: false).load
-        assert_equal '3', ENV['FOO']
-        assert_equal '1', ENV['BAR']
+        assert_equal '3', ENV['FOO'], ".env.test.local should have precedent over .env"
+        assert_equal '1', ENV['BAR'], ".env.local should have been omitted so BAR value is 1 in .env"
       end
 
       Bundler.with_clean_env do
         OodAppkit::DotenvRails.new(root_dir: d, include_local_files: true).load
-        assert_equal '3', ENV['FOO']
-        assert_equal '2', ENV['BAR']
+        assert_equal '3', ENV['FOO'], ".env.test.local should have precedent over .env"
+        assert_equal '2', ENV['BAR'], ".env.local should have precendent over .env"
       end
     end
   end
@@ -72,6 +72,7 @@ class OodAppkitTest < ActiveSupport::TestCase
 
 
   # test: set env in app/env and etc/app/env => etc/app/env is used (verify etc/app/env overrides everything that is not .local)
+  #
   # test: set env in app/env.local and etc/app/env and etc/shared/env => app/env.local is used (verify .env.local overrides all)
 
   # test "etc env and shared env modify env" do
