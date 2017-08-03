@@ -7,9 +7,13 @@ class OodAppkitTest < ActiveSupport::TestCase
   test "include_local_files argument affects dotenv_files loaded" do
     d = OodAppkit::DotenvRails.new
     assert_includes d.dotenv_files, d.root.join(".env.local")
+    assert_includes d.dotenv_files, d.shared_dir.join("env")
+    assert_includes d.dotenv_files, d.etc_dir.join("env")
 
     d = OodAppkit::DotenvRails.new(include_local_files: false)
     refute_includes d.dotenv_files, d.root.join(".env.local")
+    refute_includes d.dotenv_files, d.shared_dir.join("env")
+    refute_includes d.dotenv_files, d.etc_dir.join("env")
   end
 
   test "load normal dotenv files from specified dir" do

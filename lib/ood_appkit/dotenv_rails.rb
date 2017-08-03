@@ -72,8 +72,8 @@ module OodAppkit
       [
         root.join(".env.#{Rails.env}.local"),
         (root.join(".env.local") if include_local_files?),
-        # (Pathname.new("/users/PZS0562/efranz/awesim/config/dashboard/.env") unless Rails.env.test?),
-        # (Pathname.new("/users/PZS0562/efranz/awesim/config/shared/.env") unless Rails.env.test?),
+        (etc_dir.join("env") if include_local_files?),
+        (shared_dir.join("env") if include_local_files?),
         root.join(".env.#{Rails.env}"),
         root.join(".env")
       ].compact
