@@ -3,19 +3,32 @@ require 'ood_appkit/dotenv_rails'
 require 'minitest/mock'
 
 class OodAppkitTest < ActiveSupport::TestCase
+
+  test "include_local_files argument affects dotenv_files loaded" do
+    d = OodAppkit::DotenvRails.new
+    assert_includes d.dotenv_files, d.root.join(".env.local")
+
+    d = OodAppkit::DotenvRails.new(include_local_files: false)
+    refute_includes d.dotenv_files, d.root.join(".env.local")
+  end
+
   test "load normal dotenv files from specified dir" do
     Dir.mktmpdir do |dir|
       d = Pathname.new(dir)
       d.join('.env').write("FOO=1\nBAR=1")
-      d.join('.env.test').write("FOO=2\nBAR=2\n")
-      d.join('.env.local').write("FOO=3\n")
+      d.join('.env.local').write("BAR=2")
+      d.join('.env.test.local').write("FOO=3\n")
 
       Bundler.with_clean_env do
-        Rails.env.stub :test?, false do
-          OodAppkit::DotenvRails.new(root_dir: d).load
-          assert_equal '3', ENV['FOO']
-          assert_equal '2', ENV['BAR']
-        end
+        OodAppkit::DotenvRails.new(root_dir: d, include_local_files: false).load
+        assert_equal '3', ENV['FOO']
+        assert_equal '1', ENV['BAR']
+      end
+
+      Bundler.with_clean_env do
+        OodAppkit::DotenvRails.new(root_dir: d, include_local_files: true).load
+        assert_equal '3', ENV['FOO']
+        assert_equal '2', ENV['BAR']
       end
     end
   end
@@ -58,7 +71,6 @@ class OodAppkitTest < ActiveSupport::TestCase
   end
 
 
-  # test: set ability to change locations of etc/app/env and etc/shared/env in dotenv.config
   # test: set env in app/env and etc/app/env => etc/app/env is used (verify etc/app/env overrides everything that is not .local)
   # test: set env in app/env.local and etc/app/env and etc/shared/env => app/env.local is used (verify .env.local overrides all)
 

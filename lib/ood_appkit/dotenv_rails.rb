@@ -39,8 +39,13 @@ module OodAppkit
   class DotenvRails
     attr_reader :root
 
-    def initialize(root_dir: nil)
+    def initialize(root_dir: nil, include_local_files: true)
       @root = root_dir.nil? ? default_root : Pathname.new(root_dir)
+      @include_local_files = include_local_files
+    end
+
+    def include_local_files?
+      @include_local_files
     end
 
     def default_root
@@ -66,7 +71,7 @@ module OodAppkit
     def dotenv_files
       [
         root.join(".env.#{Rails.env}.local"),
-        (root.join(".env.local") unless Rails.env.test?),
+        (root.join(".env.local") if include_local_files?),
         # (Pathname.new("/users/PZS0562/efranz/awesim/config/dashboard/.env") unless Rails.env.test?),
         # (Pathname.new("/users/PZS0562/efranz/awesim/config/shared/.env") unless Rails.env.test?),
         root.join(".env.#{Rails.env}"),
