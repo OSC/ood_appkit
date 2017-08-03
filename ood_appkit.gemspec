@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = ">= 2.2.0"
 
   s.add_dependency "rails", "~> 4.0", ">= 4.0.7"
+  s.add_dependency "dotenv", "~> 2.0"
   s.add_dependency "ood_core", "~> 0.1"
   s.add_dependency "addressable", "~> 2.4"
   s.add_dependency "redcarpet", "~> 3.2"
