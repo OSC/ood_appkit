@@ -91,35 +91,71 @@ class OodAppkitTest < ActiveSupport::TestCase
     end
   end
 
-  # test: set env in app/env and etc/app/env => etc/app/env is used (verify etc/app/env overrides everything that is not .local)
-  #
-  # test: set env in app/env.local and etc/app/env and etc/shared/env => app/env.local is used (verify .env.local overrides all)
+  test ".env.local overrides values set in etc config files" do
+    Dir.mktmpdir do |dir|
+      Bundler.with_clean_env do
+        d = Pathname.new(dir).join('dashboard')
+        d.mkpath
+        ENV['OOD_CONFIG'] = d.join("config").to_s
+        loader = OodAppkit::DotenvRails.new(root_dir: d, include_local_files: true)
 
-  # test "etc env and shared env modify env" do
-  #   Dir.mktmpdir do |dir|
-  #     d = Pathname.new(dir).join('dashboard')
-  #     d.mkdir
+        loader.etc_dir.mkpath
+        loader.shared_dir.mkpath
 
-  #     d.join('.env').write('FOO=1\nBAR=1\nETC=0\nSHARED=0\nSHARED_OVERRIDE=0')
-  #     d.join('.env.test').write('FOO=2\nBAR=2')
-  #     d.join('.env.local').write('FOO=3')
+        d.join('.env.local').write("FOO=SUCCESS\nBAR=SUCCESS")
 
-  #     etc = d.join('etc', 'config', 'apps', 'dashboard')
-  #     etc.mkpath
-  #     etc.join("env").write('ETC=1\nSHARED_OVERRIDE=1')
+        loader.etc_dir.join("env").write("BAR=FAIL")
+        loader.shared_dir.join("env").write("FOO=FAIL")
+        loader.load
 
-  #     shared = d.join('shared')
-  #     shared.mkpath
-  #     shared.join("env").write('SHARED=1\nSHARED_OVERRIDE=2')
+        assert_equal 'SUCCESS', ENV['FOO'], ".env.local should have overridden this value set by shared config"
+        assert_equal 'SUCCESS', ENV['BAR'], ".env.local should have overridden this value set by app config"
+      end
+    end
+  end
 
-  #     Bundler.with_clean_env do
-  #       OodAppkit::DotenvRails.new(root_dir: d, etc_dir: etc, shared_dir: shared).load
-  #       assert_equal '3', ENV['FOO']
-  #       assert_equal '2', ENV['BAR']
-  #       assert_equal '1', ENV['ETC']
-  #       assert_equal '1', ENV['SHARED_OVERRIDE'], "etc/config/apps/dashboard/env's SHARED_OVERRIDE value should have precedence over shared env"
-  #     end
-  #   end
-  # end
+  test "/etc config files override .env and .env.test" do
+    Dir.mktmpdir do |dir|
+      Bundler.with_clean_env do
+        d = Pathname.new(dir).join('dashboard')
+        d.mkpath
+        ENV['OOD_CONFIG'] = d.join("config").to_s
+        loader = OodAppkit::DotenvRails.new(root_dir: d, include_local_files: true)
 
+        loader.etc_dir.mkpath
+        loader.shared_dir.mkpath
+
+        # app root dotenv files
+        d.join('.env').write("FOO=FAIL")
+        d.join('.env.test').write("BAR=FAIL")
+
+        loader.etc_dir.join("env").write("FOO=SUCCESS")
+        loader.shared_dir.join("env").write("BAR=SUCCESS")
+        loader.load
+
+        assert_equal 'SUCCESS', ENV['FOO'], "etc app config should have overridden this value"
+        assert_equal 'SUCCESS', ENV['BAR'], "etc shared config should have overridden this value"
+      end
+    end
+  end
+
+  test "etc app config overrides etc shared config" do
+    Dir.mktmpdir do |dir|
+      Bundler.with_clean_env do
+        d = Pathname.new(dir).join('dashboard')
+        d.mkpath
+        ENV['OOD_CONFIG'] = d.join("config").to_s
+        loader = OodAppkit::DotenvRails.new(root_dir: d, include_local_files: true)
+
+        loader.etc_dir.mkpath
+        loader.shared_dir.mkpath
+
+        loader.etc_dir.join("env").write("FOO=SUCCESS")
+        loader.shared_dir.join("env").write("FOO=FAIL")
+        loader.load
+
+        assert_equal 'SUCCESS', ENV['FOO'], "etc app config should have overridden this value"
+      end
+    end
+  end
 end
