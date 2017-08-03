@@ -65,6 +65,7 @@ module OodAppkit
     end
 
     def load
+      ::Dotenv.load(root.join(".env.config"))
       ::Dotenv.load(*dotenv_files)
     end
 

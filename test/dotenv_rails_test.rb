@@ -74,6 +74,22 @@ class OodAppkitTest < ActiveSupport::TestCase
     end
   end
 
+  test "change paths to etc env and shared env parent directories using .env.config" do
+    Dir.mktmpdir do |dir|
+      d = Pathname.new(dir).join("dashboard")
+      d.mkdir
+
+      d.join(".env.config").write("OOD_CONFIG=/etc/awesim/config")
+
+      Bundler.with_clean_env do
+        denv = OodAppkit::DotenvRails.new(root_dir: d)
+        denv.load
+        assert_equal "/etc/awesim/config", ENV['OOD_CONFIG']
+        assert_equal '/etc/awesim/config/apps/dashboard', denv.etc_dir.to_s, "path should be configurable using OOD_CONFIG"
+        assert_equal '/etc/awesim/config/shared', denv.shared_dir.to_s, "path should be configurable using OOD_CONFIG"
+      end
+    end
+  end
 
   # test: set env in app/env and etc/app/env => etc/app/env is used (verify etc/app/env overrides everything that is not .local)
   #
