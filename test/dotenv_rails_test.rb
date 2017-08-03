@@ -31,6 +31,33 @@ class OodAppkitTest < ActiveSupport::TestCase
     end
   end
 
+  test "verify Bundler.with_clean_env resets env after block completes" do
+    assert_nil ENV['FOO']
+
+    Bundler.with_clean_env do
+      ENV['FOO'] = "bar"
+      assert_equal "bar", ENV['FOO']
+    end
+
+    assert_nil ENV['FOO']
+  end
+
+  test "change paths to etc env and shared env parent directories" do
+    Dir.mktmpdir do |dir|
+      d = Pathname.new(dir).join("dashboard")
+      d.mkdir
+
+      Bundler.with_clean_env do
+        ENV['OOD_CONFIG'] = '/etc/awesim/config'
+
+        denv = OodAppkit::DotenvRails.new(root_dir: d)
+        assert_equal '/etc/awesim/config/apps/dashboard', denv.etc_dir.to_s, "path should be configurable using OOD_CONFIG"
+        assert_equal '/etc/awesim/config/shared', denv.shared_dir.to_s, "path should be configurable using OOD_CONFIG"
+      end
+    end
+  end
+
+
   # test: set ability to change locations of etc/app/env and etc/shared/env in dotenv.config
   # test: set env in app/env and etc/app/env => etc/app/env is used (verify etc/app/env overrides everything that is not .local)
   # test: set env in app/env.local and etc/app/env and etc/shared/env => app/env.local is used (verify .env.local overrides all)

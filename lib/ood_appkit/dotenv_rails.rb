@@ -37,20 +37,26 @@ end
 
 module OodAppkit
   class DotenvRails
-    attr_reader :root, :shared_dir, :etc_dir
+    attr_reader :root
 
-    def initialize(root_dir: nil, etc_dir: nil, shared_dir: Pathname.new("/etc/ood/config/shared"))
+    def initialize(root_dir: nil)
       @root = root_dir.nil? ? default_root : Pathname.new(root_dir)
-      @shared_dir = shared_dir
-      @etc_dir = etc_dir || default_etc_dir
-    end
-
-    def default_etc_dir
-      Pathname.new("/etc/ood/config/apps/#{root.basename}")
     end
 
     def default_root
       Rails.root || Pathname.new(ENV["RAILS_ROOT"] || Dir.pwd)
+    end
+
+    def ood_config
+      Pathname.new(ENV['OOD_CONFIG'] || '/etc/ood/config')
+    end
+
+    def shared_dir
+      ood_config.join("shared")
+    end
+
+    def etc_dir
+      ood_config.join("apps", root.basename)
     end
 
     def load
