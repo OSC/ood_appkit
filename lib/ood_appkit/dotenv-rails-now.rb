@@ -7,9 +7,19 @@
 #
 # Copied and modified from
 # https://github.com/bkeepers/dotenv/blob/a47020f6c414e0a577680b324e61876a690d2200/lib/dotenv/rails-now.rb
-#
-require "ood_appkit/dotenv_rails"
+require "dotenv/rails"
 
-OodAppkit::DotenvRails.new(include_local_files: ! Rails.env.test?).load
+unless Rails.env.test?
+  Dotenv::Railtie.instance.root.tap do |r|
+    # load .env.local first
+    Dotenv.load(r.join("env.#{Rails.env}.local"), r.join(".env.local"))
+
+    # then load /etc configs
+    config = Pathname.new(ENV['OOD_CONFIG'] || '/etc/ood/config')
+    Dotenv.load(config.join("apps", r.basename, "env"), config.join("shared", "env"))
+  end
+end
+
+Dotenv::Railtie.load
 
 require "ood_appkit"
