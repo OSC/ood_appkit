@@ -17,23 +17,22 @@ end
 Dotenv.instrumenter = ActiveSupport::Notifications
 # END COPIED FROM
 
-# NOTE: we explicitly omit because this block ends up requiring spring files in
-# production when building apps as root because spring calls expand_path on $HOME
-# or ~ which depends on $HOME being set, resulting in a crash
-#
-# We can uncomment this if we use Bundler library to check the groups spring has been
-# explicitly specified to load in (i.e. test, dev envs)
-#
-# # Watch all loaded env files with Spring
-# begin
-#   require "spring/commands"
-#   ActiveSupport::Notifications.subscribe(/^dotenv/) do |*args|
-#     event = ActiveSupport::Notifications::Event.new(*args)
-#     Spring.watch event.payload[:env].filename if Rails.application
-#   end
-# rescue LoadError
-#   # Spring is not available
-# end
+# WARNING: this block ends up requiring spring files that calls expand_path on $HOME
+# which will crash if run when user is root.
+# This block also requires spring regardless of whether the spring gem is grouped
+# for "test" in the Gemfile. So now we just limit this to "test".
+if Rails.env.test?
+  # Watch all loaded env files with Spring
+  begin
+    require "spring/commands"
+    ActiveSupport::Notifications.subscribe(/^dotenv/) do |*args|
+      event = ActiveSupport::Notifications::Event.new(*args)
+      Spring.watch event.payload[:env].filename if Rails.application
+    end
+  rescue LoadError
+    # Spring is not available
+  end
+end
 
 
 module OodAppkit
