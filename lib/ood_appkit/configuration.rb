@@ -110,12 +110,9 @@ module OodAppkit
 
       # Override Bootstrap SASS variables
       self.bootstrap = OpenStruct.new(
-        navbar_inverse_bg: '#53565a',
-        navbar_inverse_link_color: '#fff',
-        navbar_inverse_color: '$navbar-inverse-link-color',
-        navbar_inverse_link_hover_color: 'darken($navbar-inverse-link-color, 20%)',
-        navbar_inverse_brand_color: '$navbar-inverse-link-color',
-        navbar_inverse_brand_hover_color: '$navbar-inverse-link-hover-color'
+        bg_inverse_color: '#53565a',  # not an actual Bootstrap variable
+        navbar_dark_color: '#ffffff',
+        navbar_dark_hover_color: 'darken($navbar-dark-color, 20%)'
       )
       ENV.each {|k, v| /^BOOTSTRAP_(?<name>.+)$/ =~ k ? self.bootstrap[name.downcase] = v : nil}
 

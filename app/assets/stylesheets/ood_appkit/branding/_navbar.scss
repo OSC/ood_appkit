@@ -1,18 +1,15 @@
-%navbar-brand {
-  float: left;
-  padding: $navbar-padding-vertical $navbar-padding-horizontal;
-  font-size: $font-size-large;
-  line-height: $line-height-computed;
-  height: $navbar-height;
+.bg-inverse {
+  background-color: $bg-inverse-color;
+}
 
-  &:hover,
-  &:focus {
-    text-decoration: none;
+.navbar-dark {
+  .navbar-text {
+    color: $navbar-dark-hover-color;
   }
+}
 
-  > img {
-    display: block;
-  }
+.navbar-text {
+  padding: $nav-link-padding-y;
 }
 
 .ood-appkit.navbar {
@@ -21,9 +18,9 @@
     margin: 0;
     padding: 0;
 
-    @media (min-width: $grid-float-breakpoint) {
+    @media (min-width: map-get($grid-breakpoints, md)) {
       & {
-        margin-left: -$navbar-padding-horizontal;
+        margin-left: -$navbar-padding-x;
       }
     }
 
@@ -31,63 +28,62 @@
       float: left;
 
       > a {
-        @extend %navbar-brand;
+        @extend .navbar-brand;
       }
 
       + li:before {
-        @extend %navbar-brand;
-        padding: $navbar-padding-vertical 0;
+        @extend .navbar-brand;
         content: '/';
       }
     }
   }
 
-  &.navbar-default {
+  &.navbar-light {
     ul.navbar-breadcrumbs > li {
       > a {
-        color: $navbar-default-brand-hover-color;
+        color: $navbar-light-hover-color;
         &:hover,
         &:focus {
-          color: $navbar-default-brand-color;
-          background-color: $navbar-default-brand-hover-bg;
+          color: $navbar-light-color;
+          background-color: transparent;
         }
       }
 
       &:last-child > a {
-        color: $navbar-default-brand-color;
+        color: $navbar-light-color;
         &:hover,
         &:focus {
-          color: $navbar-default-brand-hover-color;
+          color: $navbar-light-hover-color;
         }
       }
 
       + li:before {
-        color: $navbar-default-brand-hover-color;
+        color: $navbar-light-hover-color;
       }
     }
   }
 
-  &.navbar-inverse {
+  &.navbar-dark {
     ul.navbar-breadcrumbs > li {
       > a {
-        color: $navbar-inverse-brand-hover-color;
+        color: $navbar-dark-hover-color;
         &:hover,
         &:focus {
-          color: $navbar-inverse-brand-color;
-          background-color: $navbar-inverse-brand-hover-bg;
+          color: $navbar-dark-color;
+          background-color: transparent;
         }
       }
 
       &:last-child > a {
-        color: $navbar-inverse-brand-color;
+        color: $navbar-dark-color;
         &:hover,
         &:focus {
-          color: $navbar-inverse-brand-hover-color;
+          color: $navbar-dark-hover-color;
         }
       }
 
       + li:before {
-        color: $navbar-inverse-brand-hover-color;
+        color: $navbar-dark-hover-color;
       }
     }
   }
