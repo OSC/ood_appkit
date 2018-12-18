@@ -308,13 +308,13 @@ You can easily override any bootstrap variable using environment variables:
 # BOOTSTRAP_<variable>='<value>'
 
 # Change font sizes
-BOOTSTRAP_FONT_SIZE_H1='50px'
-BOOTSTRAP_FONT_SIZE_H2='24px'
+BOOTSTRAP_H1_FONT_SIZE='50px'
+BOOTSTRAP_H2_FONT_SIZE='24px'
 
 # Re-use variables
-BOOTSTRAP_GRAY_BASE='#000'
-BOOTSTRAP_GRAY_DARKER='lighten($gray-base, 13.5%)'
-BOOTSTRAP_GRAY_DARK='lighten($gray-base, 20%)'
+BOOTSTRAP_BLACK='#000'
+BOOTSTRAP_GRAY_900='lighten($black, 13.5%)'
+BOOTSTRAP_GRAY_800='lighten($black, 20%)'
 ```
 
 The variables can also be overridden in an initializer:
@@ -324,12 +324,9 @@ The variables can also be overridden in an initializer:
 
 OodAppkit.configure do |config|
   # These are the defaults
-  config.bootstrap.navbar_inverse_bg = '#53565a'
-  config.bootstrap.navbar_inverse_link_color = '#fff'
-  config.bootstrap.navbar_inverse_color = '$navbar-inverse-link-color'
-  config.bootstrap.navbar_inverse_link_hover_color = 'darken($navbar-inverse-link-color, 20%)'
-  config.bootstrap.navbar_inverse_brand_color = '$navbar-inverse-link-color'
-  config.bootstrap.navbar_inverse_brand_hover_color = '$navbar-inverse-link-hover-color'
+  config.bootstrap.bg_inverse_color: '#53565a',  # not an actual Bootstrap variable
+  config.bootstrap.navbar_dark_color: '#ffffff',
+  config.bootstrap.navbar_dark_hover_color: 'darken($navbar-dark-color, 20%)'
 end
 ```
 
@@ -339,13 +336,13 @@ for these to take effect
 ```scss
 // app/assets/stylesheets/application.scss
 
-// load the bootstrap sprockets first
-@import "bootstrap-sprockets";
+// load Bootstrap first
+@import "bootstrap";
 
-// this MUST occur before you import bootstrap
+// this MUST occur before you import Bootstrap
 @import "ood_appkit/bootstrap-overrides";
 
-// this MUST occur after the bootstrap overrides
+// Bootstrap must be reimported
 @import "bootstrap";
 ```
 
@@ -390,13 +387,13 @@ rendered markdown to resemble GitHub's display of markdown.
 ```scss
 // app/assets/stylesheets/application.scss
 
-// load the bootstrap sprockets first
-@import "bootstrap-sprockets";
+// load Bootstrap first
+@import "bootstrap";
 
-// this MUST occur before you import bootstrap
+// this MUST occur before you import Bootstrap
 @import "ood_appkit/bootstrap-overrides";
 
-// this MUST occur after the bootstrap overrides
+// Bootstrap must be reimported
 @import "bootstrap";
 
 // this MUST occur after the bootstrap import
@@ -409,13 +406,13 @@ It is also included if you import the default stylesheet:
 ```scss
 // app/assets/stylesheets/application.scss
 
-// load the bootstrap sprockets first
-@import "bootstrap-sprockets";
+// load Bootstrap first
+@import "bootstrap";
 
-// this MUST occur before you import bootstrap
+// this MUST occur before you import Bootstrap
 @import "ood_appkit/bootstrap-overrides";
 
-// this MUST occur after the bootstrap overrides
+// Bootstrap must be reimported
 @import "bootstrap";
 
 // this MUST occur after the bootstrap import
@@ -443,10 +440,8 @@ This does several things things:
 
 1. enable lograge
 2. call `OodAppkit::LogFormatter.setup` which
-
     * sets the formatter of the Rails logger to an instance of OodAppkit::LogFormatter
     * and sets the `progname` of the Rails logger to the `APP_TOKEN` env var if it is set
-
 
 In production, a single log will look like:
 
@@ -462,13 +457,13 @@ To take advantage of branding features you must import it in your stylesheet:
 ```scss
 // app/assets/stylesheets/application.scss
 
-// load the bootstrap sprockets first
-@import "bootstrap-sprockets";
+// load Bootstrap first
+@import "bootstrap";
 
-// this MUST occur before you import bootstrap
+// this MUST occur before you import Bootstrap
 @import "ood_appkit/bootstrap-overrides";
 
-// this MUST occur after the bootstrap overrides
+// Bootstrap must be reimported
 @import "bootstrap";
 
 // this MUST occur after the bootstrap import
@@ -481,13 +476,13 @@ It is also included if you import the default stylesheet:
 ```scss
 // app/assets/stylesheets/application.scss
 
-// load the bootstrap sprockets first
-@import "bootstrap-sprockets";
+// load Bootstrap first
+@import "bootstrap";
 
-// this MUST occur before you import bootstrap
+// this MUST occur before you import Bootstrap
 @import "ood_appkit/bootstrap-overrides";
 
-// this MUST occur after the bootstrap overrides
+// Bootstrap must be reimported
 @import "bootstrap";
 
 // this MUST occur after the bootstrap import
@@ -500,8 +495,8 @@ One such branding feature is the `navbar-breadcrumbs`. It is used to accentuate
 the tree like style of the app in the navbar. It is used as such:
 
 ```erb
-<nav class="ood-appkit navbar navbar-inverse navbar-static-top" role="navigation">
-  <div class="navbar-header">
+<nav class="ood-appkit navbar navbar-dark navbar-expand-md bg-inverse mb-4" role="navigation">
+  <div class="container-fluid">
     ...
     <ul class="navbar-breadcrumbs">
       <li><%= link_to OodAppkit.dashboard.title, OodAppkit.dashboard.url.to_s %></li>
