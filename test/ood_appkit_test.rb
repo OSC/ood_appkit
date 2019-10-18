@@ -1,5 +1,7 @@
 require 'test_helper'
 
+# require 'ood_appkit'
+
 class OodAppkitTest < ActiveSupport::TestCase
   test "truth" do
     assert_kind_of Module, OodAppkit
@@ -19,7 +21,7 @@ class OodAppkitTest < ActiveSupport::TestCase
   end
 
   test "files urls" do
-    f = OodAppkit::Urls::File.new(base_url: "/f")
+    f = OodAppkit::Urls::Files.new(base_url: "/f")
 
     assert_equal "/f/fs/nfs/17/efranz/ood_dev", f.url(path: "/nfs/17/efranz/ood_dev").to_s
     assert_equal "/f/fs/nfs/17/efranz/ood_dev", f.url(path: Pathname.new("/nfs/17/efranz/ood_dev")).to_s
