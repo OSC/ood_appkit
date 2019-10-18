@@ -1,7 +1,5 @@
 require 'test_helper'
 
-# require 'ood_appkit'
-
 class OodAppkitTest < ActiveSupport::TestCase
   test "truth" do
     assert_kind_of Module, OodAppkit
