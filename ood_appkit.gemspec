@@ -19,10 +19,11 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
   s.required_ruby_version = ">= 2.2.0"
 
-  s.add_dependency "rails", "~> 5.0", ">= 5.2.3"
+  s.add_dependency "rails", "~> 4.0", ">= 4.0.7"
   s.add_dependency "ood_core", "~> 0.1"
   s.add_dependency "addressable", "~> 2.4"
   s.add_dependency "redcarpet", "~> 3.2"
   s.add_dependency "lograge", "~>0.3"
 
-  s.add_develpoment_dependency "s
+  s.add_development_dependency "sqlite3"
+end
