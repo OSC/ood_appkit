@@ -125,13 +125,7 @@ module OodAppkit
 
       self.enable_log_formatter = ::Rails.env.production?
 
-      self.page_title_prefix  = if ! ENV['PAGE_TITLE_PREFIX'].nil?
-                                  ENV['PAGE_TITLE_PREFIX'].to_s
-                                elsif ENV['OOD_DASHBOARD_TITLE'].nil?
-                                  ENV['OOD_DASHBOARD_TITLE'].to_s
-                                else
-                                  'Open OnDemand'
-                                end
+      self.page_title_prefix = (ENV['PAGE_TITLE_PREFIX'] || ENV['OOD_DASHBOARD_TITLE'] || 'Open OnDemand').to_s
     end
 
     private
