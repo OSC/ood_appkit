@@ -26,4 +26,5 @@ Gem::Specification.new do |s|
   s.add_dependency "lograge", "~>0.3"
 
   s.add_development_dependency "sqlite3"
+  s.add_development_dependency "climate_control", "~> 0.2.0"
 end

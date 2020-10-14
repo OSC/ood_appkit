@@ -57,6 +57,10 @@ module OodAppkit
     # @return [boolean] whether to use OodAppkit log formatting in production
     attr_accessor :enable_log_formatter
 
+    # Prefix for Page titles for Accessiblity disambiguation
+    # @return [String] The page title prefix
+    attr_accessor :page_title_prefix
+
     # Customize configuration for this object.
     # @yield [self]
     def configure
@@ -98,7 +102,7 @@ module OodAppkit
         base_url: ENV['OOD_FILES_URL']   || '/pun/sys/files'
       )
       self.editor    = Urls::Editor.new(
-        title:    ENV['OOD_EDITOR_TITLE'] || 'Editor',
+        title:    ENV['OOD_EDITOR_TITLE'] || 'File Editor',
         base_url: ENV['OOD_EDITOR_URL']   || '/pun/sys/file-editor'
       )
 
@@ -120,6 +124,14 @@ module OodAppkit
       ENV.each {|k, v| /^BOOTSTRAP_(?<name>.+)$/ =~ k ? self.bootstrap[name.downcase] = v : nil}
 
       self.enable_log_formatter = ::Rails.env.production?
+
+      self.page_title_prefix  = if ! ENV['PAGE_TITLE_PREFIX'].nil?
+                                  ENV['PAGE_TITLE_PREFIX'].to_s
+                                elsif ENV['OOD_DASHBOARD_TITLE'].nil?
+                                  ENV['OOD_DASHBOARD_TITLE'].to_s
+                                else
+                                  'Open OnDemand'
+                                end
     end
 
     private
