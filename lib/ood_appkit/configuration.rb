@@ -95,11 +95,12 @@ module OodAppkit
       )
       self.files     = Urls::Files.new(
         title:    ENV['OOD_FILES_TITLE'] || 'Files',
-        base_url: ENV['OOD_FILES_URL']   || '/pun/sys/files'
+        base_url: ENV['OOD_FILES_URL']   || '/pun/sys/dashboard/files'
       )
       self.editor    = Urls::Editor.new(
         title:    ENV['OOD_EDITOR_TITLE'] || 'Editor',
-        base_url: ENV['OOD_EDITOR_URL']   || '/pun/sys/file-editor'
+        # this is not a typo => the editor is /edit off of the base url
+        base_url: ENV['OOD_EDITOR_URL']   || '/pun/sys/dashboard/files'
       )
 
       # Add routes for useful features
