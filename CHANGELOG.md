@@ -6,8 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [2.0.1] - 2021-10-25
 
-## [2.0.0] - 2021-04-20
+## Fixed
+- Correctly publishes gem in [63](https://github.com/OSC/ood_appkit/pull/63).
+
+## [2.0.0] - 2021-10-25
 ### Changed
 - Update base URLs of Files and File Editor apps for OnDemand 2.0
 - Rails dependnecy is now 5 or 6.
@@ -47,7 +51,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Security fix: Cookies are kept within the Passenger app's base URI now.
   [#42](https://github.com/OSC/ood_appkit/pull/42)
 
-[Unreleased]: https://github.com/OSC/ood_appkit/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/OSC/ood_appkit/compare/v2.0.1...HEAD
+[2.0.1]: https://github.com/OSC/ood_appkit/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/OSC/ood_appkit/compare/v1.1.4...v2.0.0
 [1.1.4]: https://github.com/OSC/ood_appkit/compare/v1.1.3...v1.1.4
 [1.1.3]: https://github.com/OSC/ood_appkit/compare/v1.1.2...v1.1.3
