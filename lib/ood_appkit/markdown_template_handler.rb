@@ -4,8 +4,8 @@ module OodAppkit
     # String of ruby code to be evaluated when rendering the view
     # @param template [ActionView::Template] the template to be rendered
     # @return [String] string of ruby code to be evaluated
-    def self.call(template)
-      "begin;#{render(template.source)}.html_safe;end"
+    def self.call(_, source)
+      "begin;#{render(source)}.html_safe;end"
     end
 
     # Render markdown to HTML
@@ -15,11 +15,11 @@ module OodAppkit
       markdown.render(text).inspect
     end
 
-    private
-      # Markdown renderer used
-      def self.markdown
-        @markdown ||= OodAppkit.markdown
-      end
+    # Markdown renderer used
+    def self.markdown
+      @markdown ||= OodAppkit.markdown
+    end
+    private_class_method :markdown
   end
 end
 
