@@ -4,7 +4,7 @@ module OodAppkit
     class Editor < Url
       # @param (see Url#initialize)
       # @param edit_url [#to_s] the URL used to request the file editor api
-      def initialize(edit_url: '/edit', template: '{/url*}{+path}', **kwargs)
+      def initialize(edit_url: '/edit', template: '{/url*}{/fs}{+path}', **kwargs)
         super(template: template, **kwargs)
         @edit_url = parse_url_segments(edit_url.to_s)
       end
@@ -13,13 +13,15 @@ module OodAppkit
       # @param opts [#to_h] the available options for this method
       # @option opts [#to_s, nil] :path ("") The absolute path to the file on
       #   the filesystem
+      # @option opts [#to_s, nil] :fs ("") The filesystem for the path
       # @return [Addressable::URI] absolute url to access path in file editor
       #   api
       def edit(opts = {})
         opts = opts.to_h.compact.symbolize_keys
 
         path = opts.fetch(:path, "").to_s
-        @template.expand url: @base_url + @edit_url, path: path
+        fs = opts.fetch(:fs, "fs").to_s
+        @template.expand url: @base_url + @edit_url, fs: fs, path: path
       end
     end
   end
