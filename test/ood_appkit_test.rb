@@ -23,6 +23,23 @@ class OodAppkitTest < ActiveSupport::TestCase
 
     assert_equal "/f/fs/nfs/17/efranz/ood_dev", f.url(path: "/nfs/17/efranz/ood_dev").to_s
     assert_equal "/f/fs/nfs/17/efranz/ood_dev", f.url(path: Pathname.new("/nfs/17/efranz/ood_dev")).to_s
+
+    assert_equal "/f/s3/mybucket/foo", f.url(path: "/mybucket/foo", fs: "s3").to_s
+    assert_equal "/f/s3/mybucket/foo", f.url(path: Pathname.new("/mybucket/foo"), fs: "s3").to_s
+
+    assert_equal "/f/api/v1/fs/foo/bar", f.api(path: "/foo/bar").to_s
+    assert_equal "/f/api/v1/s3/foo/bar", f.api(path: "/foo/bar", fs: "s3").to_s
+
+    assert_equal "/f/Remote%200.-_/foo/bar", f.url(path: "/foo/bar", fs: "Remote 0.-_").to_s
   end
 
+  test "editor urls" do
+    e = OodAppkit::Urls::Editor.new(base_url: "/f")
+
+    assert_equal "/f/edit/fs/foo/bar", e.edit(path: "/foo/bar").to_s
+    assert_equal "/f/edit/fs/foo/bar", e.edit(path: Pathname.new("/foo/bar")).to_s
+    assert_equal "/f/edit/s3/foo/bar", e.edit(path: "/foo/bar", fs: "s3").to_s
+
+    assert_equal "/f/edit/Remote%200.-_/foo/bar", e.edit(path: "/foo/bar", fs: "Remote 0.-_").to_s
+  end
 end
