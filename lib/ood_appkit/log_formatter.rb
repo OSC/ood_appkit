@@ -7,7 +7,7 @@ module OodAppkit
     def call(severity, timestamp, progname, msg)
       severity_d = severity ? severity[0,5].rjust(5).upcase : "UNKNO"
       timestamp_d = timestamp ? timestamp.localtime : Time.now.localtime
-      msg_d = (String === msg ? msg.strip.inspect : msg.inspect)
+      msg_d = (String === msg ? msg.encode("UTF-8", :invalid => :replace, :undef => :replace).strip.inspect : msg.inspect)
 
       "[#{timestamp_d} #{progname}] #{severity_d} #{msg_d}\n"
     end
