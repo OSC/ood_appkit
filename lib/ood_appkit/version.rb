@@ -2,5 +2,5 @@
 
 module OodAppkit
   # The current version of OodAppkit
-  VERSION = '2.1.6'
+  VERSION = '2.2.1'
 end
