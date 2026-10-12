@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency "ood_core", "~> 0.1"
   s.add_dependency "addressable", "~> 2.4"
   s.add_dependency "kramdown", "~> 2.5"
+  s.add_dependency "kramdown-parser-gfm"
   s.add_dependency "lograge", "~>0.3"
 
   s.add_development_dependency "sqlite3"
