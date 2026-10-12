@@ -1,6 +1,6 @@
-require 'redcarpet'
 require 'ostruct'
 require 'ood_core'
+require 'ood_appkit/markdown_parser'
 
 module OodAppkit
   # An object that stores and adds configuration options.
@@ -71,14 +71,7 @@ module OodAppkit
       self.dataroot ||= "~/#{ENV['OOD_PORTAL'] || "ondemand"}/data/#{ENV['APP_TOKEN']}" if ENV['APP_TOKEN']
 
       # Add markdown template support
-      self.markdown = Redcarpet::Markdown.new(
-        Redcarpet::Render::HTML,
-        autolink: true,
-        tables: true,
-        strikethrough: true,
-        fenced_code_blocks: true,
-        no_intra_emphasis: true
-      )
+      self.markdown = OodAppkit::MarkdownParser.new
 
       # Initialize URL handlers for system apps
       self.public    = Urls::Public.new(
